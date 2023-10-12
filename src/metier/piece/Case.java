@@ -10,7 +10,7 @@ public class Case extends Piece
 	
 	public Case(int X,int Y,Grille grille)
 	{
-		super(X,Y,grille,".");
+		super(X,Y,grille," ");
 		this.estMenace    = false;
 		this.couleurPiece = 'c';
 	}

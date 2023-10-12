@@ -45,4 +45,5 @@ public class FrameJeu extends JFrame
 
     public int getHeight(){return this.HEIGHT;}
     public int getWidth (){return this.WIDTH ;}
+    public String[][] getGrilleModele(){return this.ctrl.getGrilleModele();}
 }

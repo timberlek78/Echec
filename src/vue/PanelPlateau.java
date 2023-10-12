@@ -1,7 +1,9 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
@@ -9,10 +11,12 @@ public class PanelPlateau extends JPanel
 {
 	private final int TAILLE_CASE = 85;
 	private FrameJeu frame;
+	private Rectangle[][] ensRec;
 
 	public PanelPlateau(FrameJeu frame)
 	{
 		this.frame = frame;
+		this.ensRec = new Rectangle[8][8];
 		this.repaint();
 	}
 
@@ -22,12 +26,14 @@ public class PanelPlateau extends JPanel
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 50;
 		echequier( XposDep,YposDep,g);
+		affichageDesPieces(XposDep, YposDep, g);
 		
 	}
 
 	public void echequier(int XposDep,int YposDep ,Graphics g)
 	{
 		int y = YposDep;
+
 
 		for (int i = 0; i < 8; i++) 
 		{	
@@ -40,6 +46,7 @@ public class PanelPlateau extends JPanel
 					g.setColor(Color.BLACK);
 
 				g.fillRect(x, y, TAILLE_CASE, TAILLE_CASE);
+				this.ensRec[i][j] =  new Rectangle(x, y, TAILLE_CASE, TAILLE_CASE);
 				x += TAILLE_CASE;
 			}
 			y += TAILLE_CASE;
@@ -50,17 +57,16 @@ public class PanelPlateau extends JPanel
 	{
 		int y = YposDep;
 
+		String[][] grilleModele = this.frame.getGrilleModele();
+
+		g.setColor(Color.BLUE);
+		g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
 		for (int i = 0; i < 8; i++) 
 		{	
 			int x = posXDep;
 			for (int j = 0; j < 8; j++) 
 			{
-				if((i + j) % 2 == 0)
-					g.setColor(Color.WHITE);
-				else
-					g.setColor(Color.BLACK);
-
-				g.fillRect(x, y, TAILLE_CASE, TAILLE_CASE);
+				g.drawString(grilleModele[i][j], x + 10, y  + TAILLE_CASE - 10);
 				x += TAILLE_CASE;
 			}
 			y += TAILLE_CASE;

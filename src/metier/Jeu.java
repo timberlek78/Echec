@@ -36,6 +36,7 @@ public class Jeu
 
 		while(true)
 		{
+			System.out.println(this.grille);
 			boucleDeJeu(ensJoueurs,alterner);
 			alterner = !alterner;
 			cpt++;

@@ -11,16 +11,20 @@ public class Controleur
 
     public Controleur()
     {
+        
         this.metier = new Grille();
         this.ihm    = new FrameJeu(this);
+        
     }
 
-    public char[] getGrilleModele(){return this.getGrilleModele();}
+    public String[][] getGrilleModele(){return this.metier.getGrilleModele();}
 
 
 
     public static void main(String[] args) 
     {
-        new Controleur();
+        System.out.println("je suis dans ce main");
+        Controleur ctrl = new Controleur();
+        System.out.println(ctrl.metier);
     }
 }

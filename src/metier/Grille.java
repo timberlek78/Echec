@@ -15,10 +15,10 @@ public class Grille
 	//grille modèle pour que les pièces est les bonnes coordonnées
 	String[][] grilleModele = {{"P", "C", "F", "D", "R", "F", "C", "T"},
 							   {"T", "P", "P", "P", "P", "P", "P", "P"},
-							   {".", ".", ".", ".", ".", ".", ".", "."},
-							   {".", ".", ".", ".", ".", ".", ".", "."},
-							   {".", ".", ".", ".", ".", ".", ".", "."},
-							   {".", ".", ".", ".", ".", ".", ".", "."},
+							   {" ", " ", " ", " ", " ", " ", " ", " "},
+							   {" ", " ", " ", " ", " ", " ", " ", " "},
+							   {" ", " ", " ", " ", " ", " ", " ", " "},
+							   {" ", " ", " ", " ", " ", " ", " ", " "},
 							   {"P", "P", "P", "P", "P", "P", "P", "P"},
 							   {"T", "C", "F", "D", "R", "F", "C", "T"}};
 
@@ -44,6 +44,8 @@ public class Grille
 		this.pieceNoir    = new ArrayList<>();
 		creationGrillePiece();	
 		activation();
+
+		Jeu jeu = new Jeu(this);
 	}
 
 
@@ -150,7 +152,7 @@ public class Grille
 	//verification des cases
 	public boolean estOccupe(int nX,int nY)
 	{
-		if(this.grilleModele[nX][nY] == ".") { return false; } //si la case n'est pas occupé 
+		if(this.grilleModele[nX][nY] == " ") { return false; } //si la case n'est pas occupé 
 		return true;
 	}
 	public boolean estDeMemeCouleur(int nX, int nY, char couleur)
@@ -245,15 +247,4 @@ public class Grille
 		return affi;
 	}
 
-	public static void main(String[] args) 
-	{
-		Grille grille = new Grille();
-		Jeu jeu = new Jeu(grille);
-
-		System.out.println(grille);
-		
-		jeu.partie();
-
-		System.out.println(grille);
-	}
 }
