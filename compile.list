@@ -1,0 +1,9 @@
+./src/metier/Grille.java
+./src/metier/Piece.java
+./src/metier/piece/Cavalier.java
+./src/metier/piece/Reine.java
+./src/metier/piece/Fou.java
+./src/metier/piece/Tour.java
+./src/metier/piece/Roi.java
+./src/metier/piece/Pion.java
+./src/metier/piece/Case.java
