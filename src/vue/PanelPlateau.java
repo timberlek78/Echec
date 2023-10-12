@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-public class PanelPlateau extends JPanel
+public class PanelPlateau extends JPanel implements MouseListener
 {
 	private final int TAILLE_CASE = 85;
 	private FrameJeu frame;
@@ -18,6 +20,11 @@ public class PanelPlateau extends JPanel
 		this.frame = frame;
 		this.ensRec = new Rectangle[8][8];
 		this.repaint();
+
+
+		/* activation des composants */
+
+		this.addMouseListener(this);
 	}
 
 
@@ -71,5 +78,49 @@ public class PanelPlateau extends JPanel
 			}
 			y += TAILLE_CASE;
 		} 
+	}
+
+
+	public void mouseClicked(MouseEvent e) 
+	{
+		int sourisX =  e.getX();
+		int sourisY =  e.getY();
+
+		System.out.println("je rentre bien dans le mouseCliked");
+
+		System.out.println("sourisX : " + sourisX);
+		System.out.println("sourisY : " + sourisY);
+		for (int i = 0; i < this.ensRec.length; i++) 
+		{
+			for (int j = 0; j < this.ensRec[i].length; j++) 
+			{
+				if(this.ensRec[i][j].getX() == sourisX || this.ensRec[i][j].getY() == sourisY)
+				{
+					System.out.println("je rentre dans le if");
+					System.out.println(i+";"+j);
+					break;
+				}
+			}
+		}
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 	}
 }
