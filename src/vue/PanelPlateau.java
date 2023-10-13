@@ -81,6 +81,8 @@ public class PanelPlateau extends JPanel implements MouseListener
 		int sourisX =  e.getX();
 		int sourisY =  e.getY();
 
+		
+
 		System.out.println("je rentre bien dans le mouseCliked");
 
 		System.out.println("sourisX : " + sourisX);
@@ -92,8 +94,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 				Rectangle rec = this.ensRec[i][j];
 				if(sourisX > rec.getMinX() && sourisX < rec.getMaxX() && sourisY > rec.getMinY() && sourisY < rec.getMaxY())
 				{
-					System.out.println("i : " + i);
-					System.out.println("j : " + j);
+					this.frame.deplacement(i,y)
 				}
 			}
 		}

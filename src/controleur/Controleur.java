@@ -1,20 +1,24 @@
 package controleur;
 
 import metier.Grille;
+import metier.Jeu;
 import vue.FrameJeu;
 
 public class Controleur 
 {
     private Grille   metier;
     private FrameJeu ihm;
+    private Jeu      partie;
 
 
     public Controleur()
     {
         
-        this.metier = new Grille();
+        this.metier = new Grille  (this);
         this.ihm    = new FrameJeu(this);
+        this.partie = new Jeu(this.metier);
         
+        this.partie.partie();
     }
 
     public String[][] getGrilleModele(){return this.metier.getGrilleModele();}
@@ -23,8 +27,6 @@ public class Controleur
 
     public static void main(String[] args) 
     {
-        System.out.println("je suis dans ce main");
         Controleur ctrl = new Controleur();
-        System.out.println(ctrl.metier);
     }
 }

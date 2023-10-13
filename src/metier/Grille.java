@@ -2,6 +2,7 @@ package metier;
 
 import java.util.ArrayList;
 
+import controleur.Controleur;
 import metier.piece.Case;
 import metier.piece.Cavalier;
 import metier.piece.Fou;
@@ -35,17 +36,17 @@ public class Grille
 	private boolean echec;
 	private ArrayList<Piece> pieceBlanche;
 	private ArrayList<Piece> pieceNoir;
+	private Controleur ctrl;
 
-	public Grille()
+	public Grille(Controleur ctrl)
 	{
 		this.grillePiece = new Piece[8][8];
 		this.echec = false;
 		this.pieceBlanche = new ArrayList<>();
 		this.pieceNoir    = new ArrayList<>();
+		this.ctrl = ctrl;
 		creationGrillePiece();	
 		activation();
-
-		Jeu jeu = new Jeu(this);
 	}
 
 
@@ -55,7 +56,7 @@ public class Grille
 	public boolean    getEchec           ()  { return this.echec;             }
 	public Piece      getPiece(int x,int y)  { return this.grillePiece[x][y]; }
 	public ArrayList<Piece> getPieceNoir()   { return this.pieceNoir;         }
-	public ArrayList<Piece> getPieceBlanche(){ return this.pieceBlanche;      }
+	public ArrayList<Piece> getPieceBlanche(){ return this.pieceBlanche;      }    
 
 	
 
