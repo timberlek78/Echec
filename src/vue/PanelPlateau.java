@@ -92,13 +92,13 @@ public class PanelPlateau extends JPanel implements MouseListener
 		System.out.println("sourisY : " + sourisY);
 		for (int i = 0; i < this.ensRec.length; i++) 
 		{
-			for (int j = 0; j < this.ensRec[i].length; j++) 
+			for (int j = 0; j < this.ensRec.length;j++) 
 			{
-				if(this.ensRec[i][j].getX() == sourisX || this.ensRec[i][j].getY() == sourisY)
+				Rectangle rec = this.ensRec[i][j];
+				if(sourisX > rec.getMinX() && sourisX < rec.getMaxX() && sourisY > rec.getMinY() && sourisY < rec.getMaxY())
 				{
-					System.out.println("je rentre dans le if");
-					System.out.println(i+";"+j);
-					break;
+					System.out.println("i : " + i);
+					System.out.println("j : " + j);
 				}
 			}
 		}

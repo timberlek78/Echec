@@ -29,6 +29,7 @@ public class FrameJeu extends JFrame
         this.setTitle("Échec et mât'Hair !");
         this.setSize    ( this.WIDTH,this.HEIGHT - 50 );
 		this.setLocation(  0, 0 );
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         /* Création des composants */
 
@@ -40,6 +41,7 @@ public class FrameJeu extends JFrame
 
 
         this.setVisible(true);
+
 
     }
 
