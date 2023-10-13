@@ -34,14 +34,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 		int YposDep = 50;
 		echequier( XposDep,YposDep,g);
 		affichageDesPieces(XposDep, YposDep, g);
-		
 	}
 
 	public void echequier(int XposDep,int YposDep ,Graphics g)
 	{
 		int y = YposDep;
-
-
 		for (int i = 0; i < 8; i++) 
 		{	
 			int x = XposDep;
@@ -63,9 +60,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 	public void affichageDesPieces(int posXDep, int YposDep,Graphics g)
 	{
 		int y = YposDep;
-
 		String[][] grilleModele = this.frame.getGrilleModele();
-
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
 		for (int i = 0; i < 8; i++) 

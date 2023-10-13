@@ -64,6 +64,9 @@ public class Grille
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}
+
+	public void removePieceNoir   (Piece p){this.pieceNoir.remove(p)   ;}
+	public void removePieceBlanche(Piece p){this.pieceBlanche.remove(p);}
 	
 	public void setEchec       (Piece p,char couleur,Roi r) //piece qui met le roi en echec, couleur c'est la couleur du roi
 	{
@@ -73,6 +76,7 @@ public class Grille
 			System.out.println("Eh oh tu es echec et mat gros malin !!!!");           
 	}
 
+	//verifie si le roi est échec et mat 
 	public boolean estEchecEtMat(Piece p,char couleur,Roi r)
 	{
 
@@ -97,15 +101,16 @@ public class Grille
 		}
 	}
 
+	//verifie si une pièce peut venir couvrir l'echec 
 	public boolean peutCouvrir(Piece p,char couleur, ArrayList<Case> chemin) // pièce qui met le roi en echec - couleur du roi - chemin depuis lequel le roi est en echec
 	{
-		if(couleur == 'B')
+		if(couleur == 'B') //si le roi en echec est blanc
 		{
-			for (Piece p1 : this.getPieceBlanche()) 
+			for (Piece p1 : this.getPieceBlanche()) //on parcours toutes les pièces blanches encore présentes dans le jeu
 			{
-				if(!p1.equals(p))
-					if(deplacementCommun(couleur, p1, chemin))
-						return true;
+				if(!p1.equals(p)) // si la pièce p1 n'est pas le roi
+					if(deplacementCommun( p1, chemin )) //si p1 a un déplacement en commun
+						return true;//il peut alors venir couvrir l'echec
 			}
 			return false;
 		}
@@ -115,28 +120,30 @@ public class Grille
 			{
 				if(!p1.equals(p))
 					if(!(p1 instanceof Roi))
-						if(deplacementCommun(couleur, p1, chemin))
+						if(deplacementCommun( p1, chemin ))
 							return true;
 			} 
 			return false;
 		}
 	}
 
+	//verifie si le roi peut se déplacer
 	public boolean peutDeplacer(Roi r)
 	{
 		ArrayList<Case> deplacementPossible = r.getCaseMenace();
 
-		for (Case case1 : deplacementPossible) 
+		for (Case case1 : deplacementPossible) //parcours toutes les cases ou le déplacement est possible (pas occupé)
 		{
-			if(!case1.getMenace())
+			if(!case1.getMenace()) // si une des cases n'est pas menacée
 			{
-				return true;
+				return true; //le roi peut alors se déplacer
 			}		
 		}
 		return false;
 	}
 
-	public boolean deplacementCommun(char couleur,Piece p, ArrayList<Case> chemin)// p est la pièce dans le même camp que le roi
+	//verifie si la pièce p en argument, peut venir se déplacé sur le chemin en argument 
+	public boolean deplacementCommun(Piece p, ArrayList<Case> chemin)// p est la pièce dans le même camp que le roi
 	{
 		ArrayList<Case> deplacementPiece = p.getCaseMenace(); //prend les cases menacées par la pièce de la même couleur 
 
@@ -149,17 +156,21 @@ public class Grille
 		}
 		return false;
 	}
+
 	//verification des cases
 	public boolean estOccupe(int nX,int nY)
 	{
 		if(this.grilleModele[nX][nY] == " ") { return false; } //si la case n'est pas occupé 
 		return true;
 	}
+
+	//verifie si la pièce au coordonnées passer en paramètre est de la même couleur que la couleur passé en paramètre
 	public boolean estDeMemeCouleur(int nX, int nY, char couleur)
 	{
 		if(this.grillePiece[nX][nY].getCouleur() == couleur){return true;}
 		return false;
 	}
+	//verifie que la case est menacé par une pièce, retourne true si elle est menacé.
 	public boolean estCaseMenace(int X,int Y)
 	{
 		if ( this.grillePiece[X][Y] instanceof Case )
