@@ -14,11 +14,13 @@ public class PanelPlateau extends JPanel implements MouseListener
 	private final int TAILLE_CASE = 85;
 	private FrameJeu frame;
 	private Rectangle[][] ensRec;
+	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
 
 	public PanelPlateau(FrameJeu frame)
 	{
 		this.frame = frame;
 		this.ensRec = new Rectangle[8][8];
+
 		this.repaint();
 
 
@@ -81,12 +83,13 @@ public class PanelPlateau extends JPanel implements MouseListener
 		int sourisX =  e.getX();
 		int sourisY =  e.getY();
 
-		
 
-		System.out.println("je rentre bien dans le mouseCliked");
+		pieceSelect(sourisX, sourisY);
 
-		System.out.println("sourisX : " + sourisX);
-		System.out.println("sourisY : " + sourisY);
+	}
+
+	public void pieceSelect(int sourisX,int sourisY)
+	{
 		for (int i = 0; i < this.ensRec.length; i++) 
 		{
 			for (int j = 0; j < this.ensRec.length;j++) 
@@ -94,7 +97,16 @@ public class PanelPlateau extends JPanel implements MouseListener
 				Rectangle rec = this.ensRec[i][j];
 				if(sourisX > rec.getMinX() && sourisX < rec.getMaxX() && sourisY > rec.getMinY() && sourisY < rec.getMaxY())
 				{
-					this.frame.deplacement(i,y)
+					if(bTemp)
+					{
+						this.frame.setDestination(i,j);
+						this.bTemp = false;
+					}
+					else
+					{
+						this.frame.setPieceSelect(i, j);
+						this.bTemp = true;
+					}
 				}
 			}
 		}

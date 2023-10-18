@@ -23,6 +23,9 @@ public class Controleur
 
     public String[][] getGrilleModele(){return this.metier.getGrilleModele();}
 
+    public void setPieceSelect(int coordX,int coordY){this.metier.setPieceSelect(coordX,coordY);}
+    public void setDestination(int coordX,int coordY){this.metier.setDestination(coordX,coordY);}
+
 
 
     public static void main(String[] args) 

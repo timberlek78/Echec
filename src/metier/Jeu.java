@@ -36,7 +36,6 @@ public class Jeu
 
 		while(true)
 		{
-			System.out.println(this.grille);
 			boucleDeJeu(ensJoueurs,alterner);
 			alterner = !alterner;
 			cpt++;
@@ -48,64 +47,79 @@ public class Jeu
 	{
 		int valeur = alterner ? 0:1;
 
-		System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur() + " de jouer.");
-		System.out.print("Choissisez la pièce que vous voulez jouer !");
-		demandeUtilisateur('P');
 
-		
-		if(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
+		if(this.grille.aPieceSelectionner())
 		{
-			while(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
+			Piece p = this.grille.getPieceSelect();
+			while(this.grille.aSelectDest() == false)
 			{
-				System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur()+ " de jouer.");
-				System.out.print("Choissisez la pièce que vous voulez jouer ! ");
-				demandeUtilisateur('P');
+				System.out.println("je suis la ");
 			}
+			Piece d = this.grille.getDestination();
+
+			p.deplacer(d.getX(),d.getY());
 		}
 
-		if(this.grille.getEchec())
-		{
-			while(!(this.grille.getPiece(this.deplace[0], this.deplace[1]) instanceof Roi))
-			{
-				System.out.println("Vous êtes en echec, veuillez deplacer votre roi ");
-				System.out.print("Choissisez la pièce que vous voulez jouer ! ");
-				demandeUtilisateur('P');
-			}
-		}
 
-		while(!estValide(this.deplace[0], this.deplace[1]))
-		{
-			System.out.print("Choissisez la piece que vous voulez jouer (X,Y) :");
-			demandeUtilisateur('P');
-		}
+
+	// 	System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur() + " de jouer.");
+	// 	System.out.print("Choissisez la pièce que vous voulez jouer !");
+	// 	demandeUtilisateur('P');
+
 		
-		System.out.print("Où voulez vous la déplacer ? (X,Y) :");
-		demandeUtilisateur('D');
+	// 	if(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
+	// 	{
+	// 		while(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
+	// 		{
+	// 			System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur()+ " de jouer.");
+	// 			System.out.print("Choissisez la pièce que vous voulez jouer ! ");
+	// 			demandeUtilisateur('P');
+	// 		}
+	// 	}
+
+	// 	if(this.grille.getEchec())
+	// 	{
+	// 		while(!(this.grille.getPiece(this.deplace[0], this.deplace[1]) instanceof Roi))
+	// 		{
+	// 			System.out.println("Vous êtes en echec, veuillez deplacer votre roi ");
+	// 			System.out.print("Choissisez la pièce que vous voulez jouer ! ");
+	// 			demandeUtilisateur('P');
+	// 		}
+	// 	}
+
+	// 	while(!estValide(this.deplace[0], this.deplace[1]))
+	// 	{
+	// 		System.out.print("Choissisez la piece que vous voulez jouer (X,Y) :");
+	// 		demandeUtilisateur('P');
+	// 	}
 		
-		while(!this.grille.getGrillePiece()[this.deplace[0]][this.deplace[1]].deplacer(this.deplace[2], this.deplace[3]))
-		{
-			System.out.print("Où voulez vous la déplacer ? (X,Y) (while) :");
-			demandeUtilisateur('D');
-		}
-		System.out.println(this.grille);
+	// 	System.out.print("Où voulez vous la déplacer ? (X,Y) :");
+	// 	demandeUtilisateur('D');
+		
+	// 	while(!this.grille.getGrillePiece()[this.deplace[0]][this.deplace[1]].deplacer(this.deplace[2], this.deplace[3]))
+	// 	{
+	// 		System.out.print("Où voulez vous la déplacer ? (X,Y) (while) :");
+	// 		demandeUtilisateur('D');
+	// 	}
+	// 	System.out.println(this.grille);
 
 	
-	}
+	// }
 
-	public boolean estValide(int x, int y)
-	{
+	// public boolean estValide(int x, int y)
+	// {
 
-		if(x >= 0 && x < 8 && y >= 0 && y < 8)
-		{
-			if(this.grille.estOccupe(x, y))
-			{
-				return true;
-			}
-			System.out.println("Il n'y a pas de pièce à la case sélectionnée.");
-			return false;
-		}
-		System.out.println("Les coordonnées que vous avez rentré ne sont pas valide, elles doivent être entre 0 et 7");
-		return false;
+	// 	if(x >= 0 && x < 8 && y >= 0 && y < 8)
+	// 	{
+	// 		if(this.grille.estOccupe(x, y))
+	// 		{
+	// 			return true;
+	// 		}
+	// 		System.out.println("Il n'y a pas de pièce à la case sélectionnée.");
+	// 		return false;
+	// 	}
+	// 	System.out.println("Les coordonnées que vous avez rentré ne sont pas valide, elles doivent être entre 0 et 7");
+	// 	return false;
 	}
 
 

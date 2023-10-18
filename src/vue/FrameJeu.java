@@ -45,7 +45,10 @@ public class FrameJeu extends JFrame
 
     }
 
-    public int getHeight(){return this.HEIGHT;}
-    public int getWidth (){return this.WIDTH ;}
+    public int        getHeight      (){return this.HEIGHT                ;}
+    public int        getWidth       (){return this.WIDTH                 ;}
     public String[][] getGrilleModele(){return this.ctrl.getGrilleModele();}
+
+    public void setPieceSelect(int coordX,int coordY){this.ctrl.setPieceSelect(coordX,coordY);}
+    public void setDestination(int coordX,int coordY){this.ctrl.setDestination(coordX,coordY);}
 }

@@ -33,18 +33,24 @@ public class Grille
 	// 						   {"T", ".", ".", ".", "R", ".", ".", "T"}};
 
 	private Piece[][] grillePiece;
+	private Piece   pieceSelect;
+	private Piece   destination;
 	private boolean echec;
+	private boolean aPieceSelectionner;
+	private boolean destSelect;
 	private ArrayList<Piece> pieceBlanche;
 	private ArrayList<Piece> pieceNoir;
 	private Controleur ctrl;
 
 	public Grille(Controleur ctrl)
 	{
-		this.grillePiece = new Piece[8][8];
-		this.echec = false;
-		this.pieceBlanche = new ArrayList<>();
-		this.pieceNoir    = new ArrayList<>();
-		this.ctrl = ctrl;
+		this.grillePiece        = new Piece[8][8];
+		this.pieceBlanche       = new ArrayList<>();
+		this.pieceNoir          = new ArrayList<>();
+		this.ctrl               = ctrl;
+		this.aPieceSelectionner = false;
+		this.echec              = false;
+		this.pieceSelect        = null ;
 		creationGrillePiece();	
 		activation();
 	}
@@ -54,14 +60,33 @@ public class Grille
 	public String[][] getGrilleModele    ()  { return this.grilleModele;      }
 	public Piece [][] getGrillePiece     ()  { return this.grillePiece;       }
 	public boolean    getEchec           ()  { return this.echec;             }
+	public boolean    aPieceSelectionner ()  { return this.aPieceSelectionner;}
+	public boolean    aSelectDest        ()  { return this.destSelect        ;}
 	public Piece      getPiece(int x,int y)  { return this.grillePiece[x][y]; }
-	public ArrayList<Piece> getPieceNoir()   { return this.pieceNoir;         }
+	public Piece      getPieceSelect     ()  { return this.pieceSelect;       }
+	public Piece      getDestination     ()  { return this.destination;       }
+	public ArrayList<Piece> getPieceNoir ()  { return this.pieceNoir;         }
 	public ArrayList<Piece> getPieceBlanche(){ return this.pieceBlanche;      }    
 
 	
 
 	/*Setteur */
 	public void setGrilleModele(String[][] nvGrille){this.grilleModele = nvGrille;}
+	public void pieceSelect(boolean b) {this.aPieceSelectionner = b;}
+	public void destSelect(boolean b) {this.destSelect = b;}
+	public void setPieceSelect(int coordX,int coordY) 
+	{
+		this.pieceSelect = this.getPiece(coordX, coordY);
+		pieceSelect(true);
+		System.out.println(this.pieceSelect);
+	}
+
+	public void setDestination(int coordX,int coordY)
+	{
+		this.destination = this.getPiece(coordX, coordY);
+		destSelect(true);
+		System.out.println(this.destination);
+	}
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}
