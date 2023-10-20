@@ -104,6 +104,7 @@ public class Pion extends Piece
 			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
 			super.setX(nX);
 			super.setY(nY);
+			super.majIHM();
 			this.caseMenaceParPion();
 			return true;
 		}

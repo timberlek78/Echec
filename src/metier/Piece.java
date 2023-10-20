@@ -55,6 +55,8 @@ public abstract class Piece
 		this.grille.miseAjourPiece(X,Y,nX,nY);
 	}
 
+	public void majIHM(){this.grille.majIHM();}
+
 
 	/* Getteur */
 	public int 	            getX() 			 { return this.x;             }

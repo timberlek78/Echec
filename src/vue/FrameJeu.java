@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 import controleur.Controleur;
 
@@ -12,7 +12,7 @@ public class FrameJeu extends JFrame
 {
     private final int HEIGHT;
     private final int WIDTH;
-    private JPanel panelPlateau;
+    private PanelPlateau panelPlateau;
     private Controleur ctrl;
 
 
@@ -48,6 +48,8 @@ public class FrameJeu extends JFrame
     public int        getHeight      (){return this.HEIGHT                ;}
     public int        getWidth       (){return this.WIDTH                 ;}
     public String[][] getGrilleModele(){return this.ctrl.getGrilleModele();}
+
+    public void majIHM() { this.panelPlateau.majIHM();}
 
     public void setPieceSelect(int coordX,int coordY){this.ctrl.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.ctrl.setDestination(coordX,coordY);}

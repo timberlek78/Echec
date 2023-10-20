@@ -78,15 +78,17 @@ public class Grille
 	{
 		this.pieceSelect = this.getPiece(coordX, coordY);
 		pieceSelect(true);
-		System.out.println(this.pieceSelect);
+
 	}
 
 	public void setDestination(int coordX,int coordY)
 	{
 		this.destination = this.getPiece(coordX, coordY);
 		destSelect(true);
-		System.out.println(this.destination);
+
 	}
+
+	public void majIHM(){this.ctrl.majIHM();}
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}

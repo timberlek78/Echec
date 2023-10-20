@@ -38,6 +38,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 		affichageDesPieces(XposDep, YposDep, g);
 	}
 
+	public void majIHM()
+	{
+		this.repaint();
+	}
+
 	public void echequier(int XposDep,int YposDep ,Graphics g)
 	{
 		int y = YposDep;

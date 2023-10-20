@@ -47,6 +47,7 @@ public class Reine extends Piece
 			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
 			super.setX(nX);
 			super.setY(nY);
+			super.majIHM();
 			caseMenaceParReine();
 		}
 		return true;

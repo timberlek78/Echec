@@ -23,6 +23,7 @@ public class Controleur
 
     public String[][] getGrilleModele(){return this.metier.getGrilleModele();}
 
+    public void majIHM(){this.ihm.majIHM();}
     public void setPieceSelect(int coordX,int coordY){this.metier.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.metier.setDestination(coordX,coordY);}
 
