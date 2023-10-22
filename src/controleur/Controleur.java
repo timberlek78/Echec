@@ -2,6 +2,7 @@ package controleur;
 
 import metier.Grille;
 import metier.Jeu;
+import metier.Piece;
 import vue.FrameJeu;
 
 public class Controleur 
@@ -21,7 +22,7 @@ public class Controleur
         this.partie.partie();
     }
 
-    public String[][] getGrilleModele(){return this.metier.getGrilleModele();}
+    public Piece[][] getGrillePiece(){return this.metier.getGrillePiece();}
 
     public void majIHM(){this.ihm.majIHM();}
     public void setPieceSelect(int coordX,int coordY){this.metier.setPieceSelect(coordX,coordY);}

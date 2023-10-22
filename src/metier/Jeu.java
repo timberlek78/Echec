@@ -46,20 +46,16 @@ public class Jeu
 	public void boucleDeJeu(Joueur[] ensJoueurs,boolean alterner) 
 	{
 		int valeur = alterner ? 0:1;
-
-		System.out.println(this.grille.aPieceSelectionner());
+		System.out.println("je suis la");
 		if(this.grille.aPieceSelectionner())
 		{
-			System.out.println("je suis la");
 			Piece p = this.grille.getPieceSelect();
-			System.out.println(p);
 			while(!this.grille.aSelectDest()){System.out.println("ici");}
 			Piece d = this.grille.getDestination();
-			System.out.println(d);
 			
 			if(p != null && d != null)
 			{
-				
+				System.out.println(p.deplacer(d.getX(), d.getY()));
 				if(p.deplacer(d.getX(), d.getY()))
 					System.out.println("Deplacement fait");
 				else

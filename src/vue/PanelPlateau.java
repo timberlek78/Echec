@@ -9,18 +9,21 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import metier.Piece;
+
 public class PanelPlateau extends JPanel implements MouseListener
 {
 	private final int TAILLE_CASE = 85;
 	private FrameJeu frame;
 	private Rectangle[][] ensRec;
 	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
+	private Graphics g;
 
 	public PanelPlateau(FrameJeu frame)
 	{
 		this.frame = frame;
 		this.ensRec = new Rectangle[8][8];
-
+		this.g = null;
 		this.repaint();
 
 
@@ -29,11 +32,14 @@ public class PanelPlateau extends JPanel implements MouseListener
 		this.addMouseListener(this);
 	}
 
+	public void setGraphic(Graphics g) {this.g = g;}
+	public Graphics getGraphics(){return this.g;}
 
 	public void paintComponent(Graphics g)
 	{
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 50;
+		this.setGraphic(g);
 		echequier( XposDep,YposDep,g);
 		affichageDesPieces(XposDep, YposDep, g);
 	}
@@ -67,7 +73,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 	public void affichageDesPieces(int posXDep, int YposDep,Graphics g)
 	{
 		int y = YposDep;
-		String[][] grilleModele = this.frame.getGrilleModele();
+		Piece[][] grillePiece = this.frame.getGrillePiece();
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
 		for (int i = 0; i < 8; i++) 
@@ -75,7 +81,10 @@ public class PanelPlateau extends JPanel implements MouseListener
 			int x = posXDep;
 			for (int j = 0; j < 8; j++) 
 			{
-				g.drawString(grilleModele[i][j], x + 10, y  + TAILLE_CASE - 10);
+				if(grillePiece[i][j].getCouleur() == 'B') g.setColor(Color.BLUE);
+				else g.setColor(Color.DARK_GRAY);
+
+				g.drawString(grillePiece[i][j].getSymbole(), x + 10, y  + TAILLE_CASE - 10);
 				x += TAILLE_CASE;
 			}
 			y += TAILLE_CASE;
@@ -89,11 +98,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 		int sourisY =  e.getY();
 
 
-		pieceSelect(sourisX, sourisY);
+		pieceSelect(sourisX, sourisY,this.getGraphics());
 
 	}
 
-	public void pieceSelect(int sourisX,int sourisY)
+	public void pieceSelect(int sourisX,int sourisY,Graphics g)
 	{
 		for (int i = 0; i < this.ensRec.length; i++) 
 		{
@@ -112,6 +121,9 @@ public class PanelPlateau extends JPanel implements MouseListener
 						this.frame.setPieceSelect(i, j);
 						this.bTemp = true;
 					}
+					g.setColor(Color.RED);
+					g.fillOval((int)rec.getCenterX(), (int)rec.getCenterY(), TAILLE_CASE / 2 , TAILLE_CASE / 2);
+					this.repaint();
 				}
 			}
 		}

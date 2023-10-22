@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 
 import controleur.Controleur;
+import metier.Piece;
 
 public class FrameJeu extends JFrame
 {
@@ -47,7 +48,7 @@ public class FrameJeu extends JFrame
 
     public int        getHeight      (){return this.HEIGHT                ;}
     public int        getWidth       (){return this.WIDTH                 ;}
-    public String[][] getGrilleModele(){return this.ctrl.getGrilleModele();}
+    public Piece[][] getGrillePiece(){return this.ctrl.getGrillePiece();}
 
     public void majIHM() { this.panelPlateau.majIHM();}
 

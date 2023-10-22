@@ -76,6 +76,10 @@ public class Grille
 	public void destSelect(boolean b) {this.destSelect = b;}
 	public void setPieceSelect(int coordX,int coordY) 
 	{
+		if(this.getPiece(coordX,coordY) instanceof Case)
+		{
+			return;
+		}
 		this.pieceSelect = this.getPiece(coordX, coordY);
 		pieceSelect(true);
 

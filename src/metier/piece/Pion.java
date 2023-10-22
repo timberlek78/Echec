@@ -40,6 +40,7 @@ public class Pion extends Piece
 
 	public boolean deplacer(int nX,int nY)
 	{
+		System.out.println("bonjour");
 		int X = super.getX();
 		int Y = super.getY();
 
