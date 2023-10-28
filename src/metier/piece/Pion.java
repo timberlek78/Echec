@@ -40,6 +40,7 @@ public class Pion extends Piece
 
 	public boolean deplacer(int nX,int nY)
 	{
+		System.out.println("je rentre dans le deplacer");
 		int X = super.getX();
 		int Y = super.getY();
 
@@ -105,6 +106,7 @@ public class Pion extends Piece
 			super.setX(nX);
 			super.setY(nY);
 			this.caseMenaceParPion();
+			this.grille.majIHM();
 			return true;
 		}
 

@@ -83,7 +83,7 @@ public class Tour extends Piece
 			super.setX(nX);
 			super.setY(nY);
 			casesMenaceesParTour();
-
+			this.grille.majIHM();
 			return bOk;
 		}
 		else

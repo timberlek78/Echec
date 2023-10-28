@@ -88,6 +88,8 @@ public class Grille
 		System.out.println(this.destination);
 	}
 
+	public void majIHM(){this.ctrl.majIHM();}
+
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}
 

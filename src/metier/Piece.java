@@ -159,7 +159,7 @@ public abstract class Piece
 
 	public String toString()
 	{
-		return "" + this.symbole + "x : "+ this.getX()+" y: "+ this.getY(); 
+		return "" + this.symbole + " x : "+ this.getX()+" y: "+ this.getY(); 
 	}
 
 }

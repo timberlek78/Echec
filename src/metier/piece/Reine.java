@@ -48,6 +48,7 @@ public class Reine extends Piece
 			super.setX(nX);
 			super.setY(nY);
 			caseMenaceParReine();
+			this.grille.majIHM();
 		}
 		return true;
 	}

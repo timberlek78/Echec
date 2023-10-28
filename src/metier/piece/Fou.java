@@ -75,6 +75,7 @@ public class Fou extends Piece
 		super.setX(nX);
 		super.setY(nY);
 		casesMenaceesParFou();
+		this.grille.majIHM();
 		return true;	
 	}
 

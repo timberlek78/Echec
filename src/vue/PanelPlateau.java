@@ -7,7 +7,11 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import metier.Piece;
+import metier.piece.Case;
 
 public class PanelPlateau extends JPanel implements MouseListener
 {
@@ -38,6 +42,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 		affichageDesPieces(XposDep, YposDep, g);
 	}
 
+	public void majIHM()
+	{
+		this.repaint();
+	}
+
 	public void echequier(int XposDep,int YposDep ,Graphics g)
 	{
 		int y = YposDep;
@@ -62,7 +71,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 	public void affichageDesPieces(int posXDep, int YposDep,Graphics g)
 	{
 		int y = YposDep;
-		String[][] grilleModele = this.frame.getGrilleModele();
+		Piece[][] grillePiece = this.frame.getGrillePiece();
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
 		for (int i = 0; i < 8; i++) 
@@ -70,7 +79,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 			int x = posXDep;
 			for (int j = 0; j < 8; j++) 
 			{
-				g.drawString(grilleModele[i][j], x + 10, y  + TAILLE_CASE - 10);
+				g.drawString(grillePiece[i][j].getSymbole(), x + 10, y  + TAILLE_CASE - 10);
 				x += TAILLE_CASE;
 			}
 			y += TAILLE_CASE;
@@ -104,8 +113,16 @@ public class PanelPlateau extends JPanel implements MouseListener
 					}
 					else
 					{
-						this.frame.setPieceSelect(i, j);
-						this.bTemp = true;
+						if(!(this.frame.getGrillePiece()[i][j] instanceof Case))
+						{
+							this.frame.setPieceSelect(i, j);
+							this.bTemp = true;
+						}
+						else
+						{
+							System.out.println("la case est vide");
+						}
+						
 					}
 				}
 			}
