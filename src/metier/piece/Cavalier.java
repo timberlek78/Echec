@@ -56,6 +56,7 @@ public class Cavalier extends Piece
 				super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
 				super.setX(nX);
 				super.setY(nY);
+				super.majIHM();
 				this.caseMenaceParCavalier();
 				this.grille.majIHM();
 				return true; //retourne true si le déplacement est validé et que les nouvelles coordonnées sont enregistré

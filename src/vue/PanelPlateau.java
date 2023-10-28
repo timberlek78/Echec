@@ -72,13 +72,17 @@ public class PanelPlateau extends JPanel implements MouseListener
 	{
 		int y = YposDep;
 		Piece[][] grillePiece = this.frame.getGrillePiece();
-		g.setColor(Color.BLUE);
 		g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
 		for (int i = 0; i < 8; i++) 
 		{	
 			int x = posXDep;
 			for (int j = 0; j < 8; j++) 
 			{
+				if(grillePiece[i][j].getCouleur() == 'B')
+					g.setColor(Color.CYAN);
+				else
+					g.setColor(Color.DARK_GRAY);
+					
 				g.drawString(grillePiece[i][j].getSymbole(), x + 10, y  + TAILLE_CASE - 10);
 				x += TAILLE_CASE;
 			}
@@ -120,7 +124,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 						}
 						else
 						{
-							System.out.println("la case est vide");
+							System.out.println("la case es");
 						}
 						
 					}

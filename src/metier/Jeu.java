@@ -50,20 +50,22 @@ public class Jeu
 		System.out.println();
 		if(this.grille.aPieceSelectionner())
 		{
-			System.out.println("je rentre ici");
 			Piece p = this.grille.getPieceSelect();
-	
-			if(!this.grille.aSelectDest()) 
+
+			if(p.getCouleur() == ensJoueurs[valeur].getCouleur())
+			{
+				if(!this.grille.aSelectDest()) 
 				while(!this.grille.aSelectDest()){System.out.println();} //si la destination est null alors on attend
 			
-			Piece d = this.grille.getDestination();
+				Piece d = this.grille.getDestination();
 
-			p.deplacer(d.getX(), d.getY());
+				p.deplacer(d.getX(), d.getY());
 
-			p = null;
-			d = null;
-			this.grille.pieceSelect(false);
-			this.grille.destSelect(false);
+				p = null;
+				d = null;
+				this.grille.pieceSelect(false);
+				this.grille.destSelect(false);
+			}
 		}
 
 	

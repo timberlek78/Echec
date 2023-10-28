@@ -5,7 +5,9 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+
 import controleur.Controleur;
+import metier.Piece;
 import metier.Piece;
 
 public class FrameJeu extends JFrame
@@ -49,8 +51,11 @@ public class FrameJeu extends JFrame
     public int        getWidth       (){return this.WIDTH                 ;}
     public Piece[][] getGrillePiece(){return this.ctrl.getGrillePiece();}
 
+
+    public void majIHM() { this.panelPlateau.majIHM();}
+
+
     public void setPieceSelect(int coordX,int coordY){this.ctrl.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.ctrl.setDestination(coordX,coordY);}
 
-    public void   majIHM(){ this.panelPlateau.majIHM(); }
 }
