@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 
 import controleur.Controleur;
 import metier.Piece;
-import metier.Piece;
 
 public class FrameJeu extends JFrame
 {
