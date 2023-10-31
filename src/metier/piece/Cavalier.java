@@ -53,19 +53,23 @@ public class Cavalier extends Piece
 					if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
 						return false;
 				}
-				super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
-				super.setX(nX);
-				super.setY(nY);
-				super.majIHM();
-				this.caseMenaceParCavalier();
-				this.grille.majIHM();
+			
 				return true; //retourne true si le déplacement est validé et que les nouvelles coordonnées sont enregistré
 			}
+			confirmationDeplacement(nX, nY, X, Y);
 		}
-		System.out.println("deplacement impossible");
 		return false;
 	}
 
+	public void confirmationDeplacement(int nX,int nY, int X, int Y )
+	{
+			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
+			super.setX(nX);
+			super.setY(nY);
+			super.majIHM();
+			this.grille.estDeplacementOk();
+			this.caseMenaceParCavalier();
+	}
 
 
 	public void caseMenaceParCavalier()

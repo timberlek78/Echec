@@ -53,7 +53,7 @@ public class FrameJeu extends JFrame
 
 
     public void majIHM() { this.panelPlateau.majIHM();}
-
+    public void changementDeCouleur(char couleur){this.panelPlateau.changementDeCouleur(couleur);}
 
     public void setPieceSelect(int coordX,int coordY){this.ctrl.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.ctrl.setDestination(coordX,coordY);}

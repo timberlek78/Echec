@@ -40,8 +40,17 @@ public class Tour extends Piece
 	{
 		int X = super.getX();
 		int Y = super.getY();
-		boolean bOk = false;
+		boolean bOk = true;
 
+
+		if(this.grille.estOccupe(nX, nY))// Si la destination est occupée
+		{
+			if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))//si elle est occupée par une piece de m^me couleur
+			{
+				bOk = false;
+				return false; //le déplacement est invalide
+			}
+		}
 		//si le déplacement est sur la colonne
 		if( nX == X)
 		{
@@ -51,40 +60,28 @@ public class Tour extends Piece
 				//si l'une des cases est occupé
 				if(this.grille.estOccupe(nX,y))
 				{
-					if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))//si la piece qui occupe la case est de la mmeme couleur
-						return false;
+					bOk = false;
 				}
 			}
-			bOk = true;
 		}
 
 		//si le déplacement est sur la ligne 
 		if(nY == Y)
 		{
-			System.out.println("je suis dans le Y");
+			// On parcours toutes les cases jusqu'a la destination souhaité
 			for (int x = X + 1; x < nX; x++) 
 			{
 				if(this.grille.estOccupe(x,nY))
 				{
-					System.out.println("je suis dans le estOccupe");
-					if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
-						return false;
+					bOk = false;
 				}
-
 			}
-			bOk = true;
 		} 
 		
 
 		if(bOk)
 		{
-			System.out.println("je suis dans le bOk");
-			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
-			super.setX(nX);
-			super.setY(nY);
-			super.majIHM();
-			casesMenaceesParTour();
-			this.grille.majIHM();
+			confirmationDeplacement(nX, nY, X, Y);
 			return bOk;
 		}
 		else
@@ -93,6 +90,17 @@ public class Tour extends Piece
 		}
 		return bOk;
 		
+	}
+
+
+	public void confirmationDeplacement(int nX, int nY, int X,int Y)
+	{
+			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
+			super.setX(nX);
+			super.setY(nY);
+			super.majIHM();
+			this.grille.estDeplacementOk();
+			this.casesMenaceesParTour();
 	}
 
 	public void casesMenaceesParTour() {

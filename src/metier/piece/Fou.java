@@ -70,14 +70,20 @@ public class Fou extends Piece
 			x += directionX;
 			y += directionY;
 		}
+		confirmationDeplacement(nX, nY, X, Y);
+		return true;	
+	}
+
+
+	public void confirmationDeplacement(int nX, int nY, int X, int Y)
+	{
 		
 		super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
 		super.setX(nX);
 		super.setY(nY);
 		super.majIHM();
+		this.grille.estDeplacementOk();
 		casesMenaceesParFou();
-		this.grille.majIHM();
-		return true;	
 	}
 
 	public void activation()

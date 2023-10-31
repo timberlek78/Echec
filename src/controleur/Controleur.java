@@ -25,6 +25,7 @@ public class Controleur
     public Piece[][] getGrillePiece(){return this.metier.getGrillePiece();}
 
     public void majIHM(){this.ihm.majIHM();}
+    public void changementDeCouleur(char couleur){this.ihm.changementDeCouleur(couleur);}
     public void setPieceSelect(int coordX,int coordY){this.metier.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.metier.setDestination(coordX,coordY);}
 

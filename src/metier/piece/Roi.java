@@ -128,8 +128,8 @@ public class Roi extends Piece
 		super.setX(nX);
 		super.setY(nY);
 		super.majIHM();
+		this.grille.estDeplacementOk();
 		this.casesAtteignablesPourRoi();
-		this.grille.majIHM();
 	}
 
 	public boolean roque(int X, int Y, int nX,int nY)

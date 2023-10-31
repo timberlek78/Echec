@@ -38,6 +38,7 @@ public class Grille
 	private boolean echec;
 	private boolean aPieceSelectionner;
 	private boolean destSelect;
+	private boolean deplacementOK;
 	private ArrayList<Piece> pieceBlanche;
 	private ArrayList<Piece> pieceNoir;
 	private Controleur ctrl;
@@ -51,6 +52,7 @@ public class Grille
 		this.aPieceSelectionner = false;
 		this.echec              = false;
 		this.pieceSelect        = null ;
+		this.deplacementOK 		= false;
 		creationGrillePiece();	
 		activation();
 	}
@@ -61,7 +63,8 @@ public class Grille
 	public Piece [][] getGrillePiece     ()  { return this.grillePiece;       }
 	public boolean    getEchec           ()  { return this.echec;             }
 	public boolean    aPieceSelectionner ()  { return this.aPieceSelectionner;}
-	public boolean    aSelectDest        ()  { return this.destSelect        ;}
+	public boolean    aSelectDest        ()  { return this.destSelect;        }
+	public boolean    deplacementOK      ()	 { return this.deplacementOK;     }
 	public Piece      getPiece(int x,int y)  { return this.grillePiece[x][y]; }
 	public Piece      getPieceSelect     ()  { return this.pieceSelect;       }
 	public Piece      getDestination     ()  { return this.destination;       }
@@ -74,25 +77,24 @@ public class Grille
 	public void setGrilleModele(String[][] nvGrille){this.grilleModele = nvGrille;}
 	public void pieceSelect(boolean b) {this.aPieceSelectionner = b;}
 	public void destSelect(boolean b) {this.destSelect = b;}
+	public void estDeplacementOk()    {this.deplacementOK = !this.deplacementOK;}
 	public void setPieceSelect(int coordX,int coordY) 
 	{
-		if(this.getPiece(coordX,coordY) instanceof Case)
-		{
-			return;
-		}
+		if(this.getPiece(coordX,coordY) instanceof Case){return;}
 		this.pieceSelect = this.getPiece(coordX, coordY);
 		pieceSelect(true);
-
 	}
 
 	public void setDestination(int coordX,int coordY)
 	{
 		this.destination = this.getPiece(coordX, coordY);
 		destSelect(true);
-
 	}
 
+
+	/* Méthodes transitives */
 	public void majIHM(){this.ctrl.majIHM();}
+	public void changementDeCouleur(char couleur){this.ctrl.changementDeCouleur(couleur);}
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}
@@ -192,8 +194,10 @@ public class Grille
 	//verification des cases
 	public boolean estOccupe(int nX,int nY)
 	{
-		if(this.grilleModele[nX][nY] == " ") { return false; } //si la case n'est pas occupé 
-		return true;
+		if(this.grillePiece[nX][nY] instanceof Case)
+			return false;
+		else
+			return true;
 	}
 
 	//verifie si la pièce au coordonnées passer en paramètre est de la même couleur que la couleur passé en paramètre

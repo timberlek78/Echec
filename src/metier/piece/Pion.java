@@ -38,82 +38,54 @@ public class Pion extends Piece
 		caseMenaceParPion();
 	}
 
-	public boolean deplacer(int nX,int nY)
+	public boolean deplacer(int nX, int nY) 
 	{
-
-		System.out.println("je rentre dans le deplacer");
-
 		int X = super.getX();
 		int Y = super.getY();
+	
+		if (Math.abs(nX - X) > 2)
+			return false;
+	
+		boolean attaqueValide = (Math.abs(nX - X) == 1 && Math.abs(nY - Y) == 1);
 
-		boolean bOk = true;
-
-		boolean estAttaqueValide = (Math.abs(nX - X) == 1 && Math.abs(nY - Y) == 1);
-		
-		if(estAttaqueValide )	
-		{
-			System.out.println("je rentre ic ");
-			if(this.grille.estOccupe(nX, nY))
-			{
-				System.out.println("je rentre ici aussi ");
-				if(!this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
-				{
-					System.out.println("je rentre ici encoer");
-					bOk = true;
+		if(attaqueValide)
+			if (nX > X && this.getCouleur() == 'B' || nX < X && this.getCouleur() == 'N')
+				if (this.grille.estOccupe(nX, nY)){
+					if (!this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) 
+						confirmationDeplacement(nX, nY, X, Y);
+						return true;
 				}
-			}
-			else
-			{
-				bOk = false;
-			}
+
+		if (Math.abs(nX - X) == 2)
+			if (!aJoue)
+				if (!this.grille.estOccupe(nX, nY)) {
+					confirmationDeplacement(nX, nY, X, Y);
+					aJoue = true;
+					return true;
+				}
 			
-		}
-		else
-		{
-			System.out.println("je rentre ici");
-			if(this.aJoue) //si le pion n'a pas deja joué
-			{
-				if(Math.abs(nX-X) == 2)
-				{
-					if(!this.grille.estOccupe(nX, nY))
-						bOk = true;
-					else
-						bOk = false;
-				}
-				else
-				{
-					bOk = false;
-				}
-			}
-			else
-			{
-				if(Math.abs(nX-X) == 1)
-				{
-					if(!this.grille.estOccupe(nX, nY))
-						bOk = true;
-					else
-						bOk = false;
-				}
-				else
-				{
-					bOk = false;
+		if (Math.abs(nX - X) == 1 && nY == Y) {
+			if ((this.getCouleur() == 'B' && nX - X == 1) || (this.getCouleur() == 'N' && nX - X == -1)) {
+				if (!this.grille.estOccupe(nX, nY)) {
+					confirmationDeplacement(nX, nY, X, Y);
+					aJoue = true;
+					return true;
 				}
 			}
 		}
-		System.out.println(bOk);
-		if(bOk)
-		{
-			System.out.println("je suis la dans le pion");
-			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
-			super.setX(nX);
-			super.setY(nY);
-			super.majIHM();
-			this.caseMenaceParPion();
-			this.grille.majIHM();
-			return true;
-		}
-
 		return false;
+	}
+	
+	
+	
+	public void confirmationDeplacement(int nX,int nY,int X,int Y)
+	{
+		super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
+		super.setX(nX);
+		super.setY(nY);
+		super.majIHM();
+		this.grille.estDeplacementOk();
+		this.caseMenaceParPion();
 	}
 
 	public void caseMenaceParPion()
@@ -139,14 +111,17 @@ public class Pion extends Piece
 				}		
 				if(this.grille.getPiece(x + 1, y - 1) instanceof Roi || this.grille.getPiece(x+1, y+1) instanceof Roi)
 				{
-					if(!this.grille.estDeMemeCouleur(x + 1, y - 1, this.getCouleur()))
+					if(this.grille.estDeMemeCouleur(x + 1, y - 1, this.getCouleur()))
 					{
+						System.out.println("je rentre ici aussi mais je ne sais pas pourquoi ");
 						super.setChemin(chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
+						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x + 1, y - 1));
 					}
-					else if(!this.grille.estDeMemeCouleur(x +1 , y + 1, this.getCouleur()))
+					else if(this.grille.estDeMemeCouleur(x +1 , y + 1, this.getCouleur()))
 					{
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
+						System.out.println("je rentre ici mais je ne comprend vrm pas poruqoi ");
+						super.setChemin(chemin);
+						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x + 1, y + 1));
 					}
 				}
 				if(!this.grille.estOccupe(x + 1, y - 1) && !this.grille.estOccupe(x+1,y+1))
@@ -162,11 +137,11 @@ public class Pion extends Piece
 			{
 				if(this.grille.getPiece( x - 1, y - 1 ) instanceof Roi || this.grille.getPiece( x - 1, y + 1 ) instanceof Roi)
 				{
-					if(!this.grille.estDeMemeCouleur( x - 1, y - 1, this.getCouleur() ))
+					if(this.grille.estDeMemeCouleur( x - 1, y - 1, this.getCouleur() ))
 					{
 						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
 					}
-					else if(!this.grille.estDeMemeCouleur(x - 1 , y + 1, this.getCouleur()))
+					else if(this.grille.estDeMemeCouleur(x - 1 , y + 1, this.getCouleur()))
 					{
 						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
 					}

@@ -44,14 +44,20 @@ public class Reine extends Piece
 				if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
 					return false;
 			}
-			super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
-			super.setX(nX);
-			super.setY(nY);
-			super.majIHM();
-			caseMenaceParReine();
-			this.grille.majIHM();
+			confirmationDeplacement(nX, nY, X, Y);
 		}
 		return true;
+	}
+
+	public void confirmationDeplacement(int nX,int nY,int X,int Y)
+	{
+		super.miseAjourModele(nX,nY,X,Y,super.getSymbole());
+		super.setX(nX);
+		super.setY(nY);
+		super.majIHM();
+		this.grille.estDeplacementOk();
+		caseMenaceParReine();
+
 	}
 
 

@@ -2,23 +2,24 @@ package metier;
 
 import java.util.Scanner;
 
-import metier.piece.Roi;
 
 public class Jeu 
 {
 	private boolean echecEtMat;
 	private Grille grille;
 	private String[] str;
-	private int[] deplace;
-	private Scanner sc;
+	private char couleurTour;
+	// private int[] deplace;
+	// private Scanner sc;
 
 
 	public Jeu(Grille grille) 
 	{
 		this.echecEtMat = false;
 		this.grille = grille;
-		this.sc = new Scanner (System.in);
-		this.deplace = new int[4];
+		// this.sc = new Scanner (System.in);
+		// this.deplace = new int[4];
+		this.couleurTour = 'B';
 	}
 
 
@@ -47,15 +48,17 @@ public class Jeu
 	{
 		int valeur = alterner ? 0:1;
 
-		System.out.println();
+
+		System.out.print("");
 		if(this.grille.aPieceSelectionner())
 		{
 			Piece p = this.grille.getPieceSelect();
 
-			if(p.getCouleur() == ensJoueurs[valeur].getCouleur())
+			if(p.getCouleur() == this.couleurTour)
 			{
+				System.out.println("je rentre quand meme ici");
 				if(!this.grille.aSelectDest()) 
-				while(!this.grille.aSelectDest()){System.out.println();} //si la destination est null alors on attend
+					while(!this.grille.aSelectDest()){System.out.print("");} //si la destination est null alors on attend
 			
 				Piece d = this.grille.getDestination();
 
@@ -65,87 +68,38 @@ public class Jeu
 				d = null;
 				this.grille.pieceSelect(false);
 				this.grille.destSelect(false);
+
+				if(this.grille.deplacementOK()){
+					changementDeCouleur();
+					this.grille.estDeplacementOk();
+				}
 			}
 		}
-
-	
-
-	// 	System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur() + " de jouer.");
-	// 	System.out.print("Choissisez la pièce que vous voulez jouer !");
-	// 	demandeUtilisateur('P');
-
-		
-	// 	if(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
-	// 	{
-	// 		while(this.grille.getPiece(this.deplace[0], this.deplace[1]).getCouleur() != ensJoueurs[valeur].getCouleur())
-	// 		{
-	// 			System.out.println("C'est au joueur " + ensJoueurs[valeur].getCouleur()+ " de jouer.");
-	// 			System.out.print("Choissisez la pièce que vous voulez jouer ! ");
-	// 			demandeUtilisateur('P');
-	// 		}
-	// 	}
-
-	// 	if(this.grille.getEchec())
-	// 	{
-	// 		while(!(this.grille.getPiece(this.deplace[0], this.deplace[1]) instanceof Roi))
-	// 		{
-	// 			System.out.println("Vous êtes en echec, veuillez deplacer votre roi ");
-	// 			System.out.print("Choissisez la pièce que vous voulez jouer ! ");
-	// 			demandeUtilisateur('P');
-	// 		}
-	// 	}
-
-	// 	while(!estValide(this.deplace[0], this.deplace[1]))
-	// 	{
-	// 		System.out.print("Choissisez la piece que vous voulez jouer (X,Y) :");
-	// 		demandeUtilisateur('P');
-	// 	}
-		
-	// 	System.out.print("Où voulez vous la déplacer ? (X,Y) :");
-	// 	demandeUtilisateur('D');
-		
-	// 	while(!this.grille.getGrillePiece()[this.deplace[0]][this.deplace[1]].deplacer(this.deplace[2], this.deplace[3]))
-	// 	{
-	// 		System.out.print("Où voulez vous la déplacer ? (X,Y) (while) :");
-	// 		demandeUtilisateur('D');
-	// 	}
-	// 	System.out.println(this.grille);
-
-	
-	// }
-
-	// public boolean estValide(int x, int y)
-	// {
-
-	// 	if(x >= 0 && x < 8 && y >= 0 && y < 8)
-	// 	{
-	// 		if(this.grille.estOccupe(x, y))
-	// 		{
-	// 			return true;
-	// 		}
-	// 		System.out.println("Il n'y a pas de pièce à la case sélectionnée.");
-	// 		return false;
-	// 	}
-	// 	System.out.println("Les coordonnées que vous avez rentré ne sont pas valide, elles doivent être entre 0 et 7");
-	// 	return false;
 	}
 
-
-	public void demandeUtilisateur(char action)
+	public void changementDeCouleur()
 	{
-		str = this.sc.nextLine().split(",");
- 
-		if(action == 'P')
-		{
-			this.deplace[0] = Integer.parseInt(str[0]);
-			this.deplace[1] = Integer.parseInt(str[1]);
-		}
-		else
-		{
-			this.deplace[2] = Integer.parseInt(str[0]);
-			this.deplace[3] = Integer.parseInt(str[1]);
-		}
+		this.couleurTour = this.couleurTour == 'N' ? 'B' : 'N';
+		this.grille.changementDeCouleur(this.couleurTour);
+		System.out.println(this.couleurTour);
 	}
+
+
+	// public void demandeUtilisateur(char action)
+	// {
+	// 	str = this.sc.nextLine().split(",");
+ 
+	// 	if(action == 'P')
+	// 	{
+	// 		this.deplace[0] = Integer.parseInt(str[0]);
+	// 		this.deplace[1] = Integer.parseInt(str[1]);
+	// 	}
+	// 	else
+	// 	{
+	// 		this.deplace[2] = Integer.parseInt(str[0]);
+	// 		this.deplace[3] = Integer.parseInt(str[1]);
+	// 	}
+	// }
 	
 }
 
