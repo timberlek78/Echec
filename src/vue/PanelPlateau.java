@@ -1,7 +1,9 @@
 package vue;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -20,15 +22,17 @@ public class PanelPlateau extends JPanel implements MouseListener
 	private FrameJeu frame;
 	private Rectangle[][] ensRec;
 	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
-	private Graphics g;
+	private Graphics2D g;
 	private boolean afficherCercle = false;
 	private int xCercle;
 	private int yCercle;
 
 	public PanelPlateau(FrameJeu frame)
 	{
+		System.out.println("mais je rentre quand meme");
 		this.frame = frame;
 		this.ensRec = new Rectangle[8][8];
+		
 
 		this.repaint();
 
@@ -39,16 +43,24 @@ public class PanelPlateau extends JPanel implements MouseListener
 	}
 
 
-	public void paintComponent(Graphics g) {
-		this.g = g;
+	public void paintComponent(Graphics g) 
+	{
+		Graphics2D g2d = (Graphics2D) g;
+		this.g = g2d;
+		g2d.setStroke(new BasicStroke(20)); // Épaisseur de trait de 2 pixels
+
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 50;
-		echequier(XposDep, YposDep, this.g);
-		affichageDesPieces(XposDep, YposDep, this.g);
+
+
+		this.g.drawRect(XposDep, YposDep, TAILLE_CASE * 8, TAILLE_CASE * 8);
+		echequier(XposDep, YposDep, g2d);
+		affichageDesPieces(XposDep, YposDep, g2d);
 		
-		if (afficherCercle) {
-			this.g.setColor(Color.YELLOW);
-			this.g.drawOval(xCercle, yCercle, TAILLE_CASE / 2, TAILLE_CASE / 2);
+		if (afficherCercle) 
+		{
+			g2d.setColor(Color.YELLOW);
+			g2d.drawOval(xCercle - 20, yCercle - 20, TAILLE_CASE / 2, TAILLE_CASE / 2);
 		}
 	}
 
@@ -91,8 +103,8 @@ public class PanelPlateau extends JPanel implements MouseListener
 				try 
 				{
 					BufferedImage image = ImageIO.read(new File("lib/"+grillePiece[i][j].getCouleur()+"/"+grillePiece[i][j].getSymbole()+".png"));
-
-					this.g.drawImage(image, x, y, frame);
+					this.g.drawImage(image, x, y, TAILLE_CASE,TAILLE_CASE,frame);
+		
 				}
 				catch (Exception e) {}
 				x += TAILLE_CASE;
@@ -107,8 +119,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 		int sourisX =  e.getX();
 		int sourisY =  e.getY();
 
+		if(e.getButton() == MouseEvent.BUTTON1)
+			pieceSelect(sourisX, sourisY);
 
-		pieceSelect(sourisX, sourisY);
+		if(e.getButton() == MouseEvent.BUTTON3)
+			majIHM();
 
 	}
 
@@ -141,7 +156,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 						{
 							this.frame.setPieceSelect(i, j);
 							this.bTemp = true;
-							pieceSelectIHM((int)rec.getX(),(int)rec.getY());
+							pieceSelectIHM((int)rec.getCenterX(),(int)rec.getCenterY());
 						}
 					}
 				}
