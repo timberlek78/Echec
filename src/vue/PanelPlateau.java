@@ -1,7 +1,6 @@
 package vue;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -11,7 +10,6 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.plaf.synth.SynthScrollBarUI;
 
 import metier.Piece;
 import metier.piece.Case;
@@ -23,6 +21,9 @@ public class PanelPlateau extends JPanel implements MouseListener
 	private Rectangle[][] ensRec;
 	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
 	private Graphics g;
+	private boolean afficherCercle = false;
+	private int xCercle;
+	private int yCercle;
 
 	public PanelPlateau(FrameJeu frame)
 	{
@@ -38,17 +39,22 @@ public class PanelPlateau extends JPanel implements MouseListener
 	}
 
 
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g) {
 		this.g = g;
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 50;
-		echequier( XposDep,YposDep,this.g);
+		echequier(XposDep, YposDep, this.g);
 		affichageDesPieces(XposDep, YposDep, this.g);
+		
+		if (afficherCercle) {
+			this.g.setColor(Color.YELLOW);
+			this.g.drawOval(xCercle, yCercle, TAILLE_CASE / 2, TAILLE_CASE / 2);
+		}
 	}
 
 	public void majIHM()
 	{
+		afficherCercle = false;
 		this.repaint();
 	}
 
@@ -88,10 +94,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 
 					this.g.drawImage(image, x, y, frame);
 				}
-				catch (Exception e) 
-				{
-					System.out.println("oh y a un pb");
-				}
+				catch (Exception e) {}
 				x += TAILLE_CASE;
 			}
 			y += TAILLE_CASE;
@@ -110,10 +113,11 @@ public class PanelPlateau extends JPanel implements MouseListener
 	}
 
 
-	public void pieceSelectIHM(int x,int y)
+	public void pieceSelectIHM(int x, int y) 
 	{
-		this.g.setColor(Color.YELLOW);
-		this.g.fillOval(x, y, 100, 100);
+		this.xCercle = x;
+		this.yCercle = y;
+		afficherCercle = true;
 		this.repaint();
 	}
 

@@ -36,28 +36,24 @@ public class Cavalier extends Piece
 		caseMenaceParCavalier();
 	}
 
-	public boolean deplacer(int nX,int nY)
-	{
+	public boolean deplacer(int nX, int nY) {
 		int X = super.getX();
 		int Y = super.getY();
-
-		//si la nouvelle coordonnées Y est 3 case au dessus ou en dessus OU 1 case en dessous ou au dessus  
-		if( nY == Y + 2 || nY == Y - 2 || nY == Y + 1 || nY == Y - 1 )
-		{
-			//si la nouvelle coordonnées X est a 3 case au dessus ou en dessous OU 1 case en dessous ou au dessus
-			if(nX == X + 1 || nX == X + 2 || nX == X - 1 || nX == X - 2 )
-			{
-				//si le deplacement est possible
-				if(this.grille.estOccupe(nX,nY))
-				{
-					if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
-						return false;
+	
+		int deltaX = Math.abs(nX - X);
+		int deltaY = Math.abs(nY - Y);
+	
+		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
+			// Vérifiez si la case cible est occupée par une pièce de couleur différente
+			if (this.grille.estOccupe(nX, nY)) {
+				if (this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) {
+					return false;
 				}
-				confirmationDeplacement(nX, nY, X, Y);
-				return true; //retourne true si le déplacement est validé et que les nouvelles coordonnées sont enregistré
 			}
-			
+			confirmationDeplacement(nX, nY, X, Y);
+			return true;
 		}
+	
 		return false;
 	}
 

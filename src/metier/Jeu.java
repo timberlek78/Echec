@@ -1,21 +1,23 @@
 package metier;
 
+import javax.swing.JOptionPane;
+
+import metier.piece.Case;
+
 public class Jeu 
 {
 	private boolean echecEtMat;
 	private Grille grille;
 	private String[] str;
 	private char couleurTour;
-	// private int[] deplace;
-	// private Scanner sc;
+	private Piece p;
+	private Piece d;
 
 
 	public Jeu(Grille grille) 
 	{
 		this.echecEtMat = false;
 		this.grille = grille;
-		// this.sc = new Scanner (System.in);
-		// this.deplace = new int[4];
 		this.couleurTour = 'B';
 	}
 
@@ -44,28 +46,27 @@ public class Jeu
 	public void boucleDeJeu(Joueur[] ensJoueurs,boolean alterner) 
 	{
 		int valeur = alterner ? 0:1;
-		Piece p;
-		Piece d;
 
 		System.out.print("");
 		if(this.grille.aPieceSelectionner())
 		{
-			p = this.grille.getPieceSelect();
+			this.p = this.grille.getPieceSelect();
+
+			if(this.p instanceof Case)
+				resetSelect();
+
 
 			if(p.getCouleur() == this.couleurTour)
 			{
 				if(!this.grille.aSelectDest()) 
 					while(!this.grille.aSelectDest()){System.out.print("");} //si la destination est null alors on attend
 			
-				d = this.grille.getDestination();
+				this.d = this.grille.getDestination();
 
-				if(p != null && d != null)
+				if(this.p != null && this.d != null)
 					if(p.deplacer(d.getX(), d.getY()))
 					{
-						p = null;
-						d = null;
-						this.grille.pieceSelect(false);
-						this.grille.destSelect(false);
+						resetSelect();
 					}
 				
 				if(this.grille.deplacementOK()){
@@ -75,13 +76,19 @@ public class Jeu
 			}
 			else
 			{
-				p = null;
-				d = null;
-				this.grille.pieceSelect(false);
-				this.grille.destSelect(false);
-				System.out.println("toute est clear");
+				JOptionPane.showMessageDialog(null, "C'est la mauvaise couleurs, c'est au tour du joueur " + this.couleurTour + " de jouer.");
+				resetSelect();
 			}
 		}
+	}
+
+	public void resetSelect()
+	{
+		this.p = null;
+		this.d = null;
+		this.grille.pieceSelect(false);
+		this.grille.destSelect(false);
+		System.out.println("toute est clear");
 	}
 
 	public void changementDeCouleur()
