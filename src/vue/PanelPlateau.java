@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
+import javax.swing.plaf.synth.SynthScrollBarUI;
 
 import metier.Piece;
 import metier.piece.Case;
@@ -93,7 +94,6 @@ public class PanelPlateau extends JPanel implements MouseListener
 
 	public void changementDeCouleur(char couleur)
 	{
-		System.out.println("je suis la");
 		this.g.setColor(Color.black);
 		this.g.drawRect(10, 10, 85,85);
 		this.g.setFont(new Font("piece", Font.BOLD, TAILLE_CASE - 10));
@@ -111,6 +111,14 @@ public class PanelPlateau extends JPanel implements MouseListener
 
 		pieceSelect(sourisX, sourisY);
 
+	}
+
+
+	public void pieceSelectIHM(int x,int y)
+	{
+		this.g.setColor(Color.YELLOW);
+		this.g.fillOval(x, y, 100, 100);
+		this.repaint();
 	}
 
 	public void pieceSelect(int sourisX,int sourisY)
@@ -133,9 +141,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 						{
 							this.frame.setPieceSelect(i, j);
 							this.bTemp = true;
-							this.g.setColor(Color.YELLOW);
-							this.g.fillOval((int)rec.getCenterX(),(int) rec.getCenterY(), 10, 10);
-							this.repaint();
+							pieceSelectIHM((int)rec.getX(),(int)rec.getY());
 						}
 					}
 				}

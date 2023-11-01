@@ -29,9 +29,6 @@ public class Controleur
     public void setPieceSelect(int coordX,int coordY){this.metier.setPieceSelect(coordX,coordY);}
     public void setDestination(int coordX,int coordY){this.metier.setDestination(coordX,coordY);}
 
-
-
-
     public static void main(String[] args) 
     {
         Controleur ctrl = new Controleur();

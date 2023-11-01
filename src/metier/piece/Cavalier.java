@@ -53,10 +53,10 @@ public class Cavalier extends Piece
 					if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
 						return false;
 				}
-			
+				confirmationDeplacement(nX, nY, X, Y);
 				return true; //retourne true si le déplacement est validé et que les nouvelles coordonnées sont enregistré
 			}
-			confirmationDeplacement(nX, nY, X, Y);
+			
 		}
 		return false;
 	}
