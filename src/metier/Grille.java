@@ -94,7 +94,6 @@ public class Grille
 
 	/* Méthodes transitives */
 	public void majIHM(){this.ctrl.majIHM();}
-	public void changementDeCouleur(char couleur){this.ctrl.changementDeCouleur(couleur);}
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}

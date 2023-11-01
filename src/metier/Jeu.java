@@ -87,8 +87,6 @@ public class Jeu
 	public void changementDeCouleur()
 	{
 		this.couleurTour = (this.couleurTour == 'N' ? 'B' : 'N');
-		System.out.println(this.couleurTour);
-		this.grille.changementDeCouleur(this.couleurTour);
 	}
 }
 
