@@ -1,18 +1,11 @@
 package vue;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.border.Border;
+
 
 import controleur.Controleur;
 import metier.Piece;
@@ -22,7 +15,7 @@ public class FrameJeu extends JFrame {
 	private final int WIDTH;
 	private PanelPlateau panelPlateau;
 	private Controleur ctrl;
-	private JLabel backgroundLabel;
+
 
 	public FrameJeu(Controleur ctrl) {
 		Dimension taille = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -39,16 +32,6 @@ public class FrameJeu extends JFrame {
 
 		
 
-		backgroundLabel = new JLabel();
-
-		// Chargez l'image de fond et configurez sa taille
-		try {
-			BufferedImage image_fond = ImageIO.read(new File("lib/fond.jpg"));
-			backgroundLabel.setIcon(new ImageIcon(image_fond));
-			backgroundLabel.setBounds(0, 0, this.WIDTH, this.HEIGHT);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		panelPlateau = new PanelPlateau(this);
 		
@@ -58,9 +41,8 @@ public class FrameJeu extends JFrame {
 		this.setVisible(true);
 	}
 
-	public void majIHM() {
-		this.panelPlateau.majIHM();
-	}
+	public void majIHM() {this.panelPlateau.majIHM();}
+	public void pieceManger(Piece p){this.panelPlateau.pieceManger(p);}
 
 	public void setPieceSelect(int coordX, int coordY) {
 		this.ctrl.setPieceSelect(coordX, coordY);

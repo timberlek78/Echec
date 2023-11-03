@@ -83,6 +83,7 @@ public class Roi extends Piece
 						else
 						{
 							System.out.println("je suis dans le true");
+							this.grille.pieceManger(this.grille.getPiece(nX, nY));
 							this.majDeplacement(X, Y, nX, nY);
 							aRoque = false;
 							return true;

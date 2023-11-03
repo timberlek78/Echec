@@ -46,9 +46,10 @@ public class Cavalier extends Piece
 		if ((deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2)) {
 			// Vérifiez si la case cible est occupée par une pièce de couleur différente
 			if (this.grille.estOccupe(nX, nY)) {
-				if (this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) {
+				if (this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) 
 					return false;
-				}
+				else
+					this.grille.pieceManger(this.grille.getPiece(nX, nY));
 			}
 			confirmationDeplacement(nX, nY, X, Y);
 			return true;

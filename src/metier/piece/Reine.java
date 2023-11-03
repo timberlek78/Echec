@@ -43,6 +43,8 @@ public class Reine extends Piece
 			{
 				if(this.grille.estDeMemeCouleur(nX, nY, this.getCouleur()))
 					return false;
+				else
+					this.grille.pieceManger(this.grille.getPiece(nX, nY));
 			}
 			confirmationDeplacement(nX, nY, X, Y);
 		}

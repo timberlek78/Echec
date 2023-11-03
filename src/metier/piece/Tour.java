@@ -50,6 +50,10 @@ public class Tour extends Piece
 				bOk = false;
 				return false; //le déplacement est invalide
 			}
+			else
+			{
+				this.grille.pieceManger(this.grille.getPiece(nX, nY));
+			}
 		}
 		//si le déplacement est sur la colonne
 		if( nX == X)

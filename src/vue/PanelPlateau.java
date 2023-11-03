@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -18,24 +19,34 @@ import metier.piece.Case;
 
 public class PanelPlateau extends JPanel implements MouseListener
 {
-	private final int TAILLE_CASE = 85;
-	private FrameJeu frame;
+	private final int TAILLE_CASE = 70;
+	private final int Y_PIECE_MANGER_N = TAILLE_CASE * 9 + 50;
+	private final int Y_PIECE_MANGER_B = 50;
+	private final int X_PIECE_MANGER;
 	private Rectangle[][] ensRec;
-	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
+	private ArrayList<BufferedImage> ensImagePieceManger;
+	private ArrayList<Character> couleurPieceManger;
 	private Graphics2D g;
+	private FrameJeu frame;
 	private boolean afficherCercle = false;
+	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
 	private int xCercle;
 	private int yCercle;
+	private int nbPieceMangerB;
+	private int nbPieceMangerN;
 
 	public PanelPlateau(FrameJeu frame)
 	{
-		System.out.println("mais je rentre quand meme");
 		this.frame = frame;
 		this.ensRec = new Rectangle[8][8];
-		
+		X_PIECE_MANGER = this.frame.getWidth() / 4 - 50;
 
+		this.ensImagePieceManger = new ArrayList<BufferedImage>();
+		this.couleurPieceManger  = new ArrayList<Character>();
+
+		this.nbPieceMangerB = 0;
+		this.nbPieceMangerN = 0;
 		this.repaint();
-
 
 		/* activation des composants */
 
@@ -50,7 +61,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 		g2d.setStroke(new BasicStroke(20)); // Épaisseur de trait de 2 pixels
 
 		int XposDep = this.frame.getWidth() / 4;
-		int YposDep = 50;
+		int YposDep = 100;
 
 
 		this.g.drawRect(XposDep, YposDep, TAILLE_CASE * 8, TAILLE_CASE * 8);
@@ -59,14 +70,33 @@ public class PanelPlateau extends JPanel implements MouseListener
 		
 		if (afficherCercle) 
 		{
+			g2d.setStroke(new BasicStroke(10));
 			g2d.setColor(Color.YELLOW);
 			g2d.drawOval(xCercle - 20, yCercle - 20, TAILLE_CASE / 2, TAILLE_CASE / 2);
 		}
+
+
+		for (int i = 0; i < ensImagePieceManger.size(); i++) 
+		{
+			if(this.couleurPieceManger.get(i) == 'B')
+			{
+				g2d.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerB * TAILLE_CASE/2), Y_PIECE_MANGER_B, TAILLE_CASE/2, TAILLE_CASE/2, frame);
+			}
+			else
+			{
+				g2d.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerN * TAILLE_CASE/2), Y_PIECE_MANGER_N, TAILLE_CASE/2, TAILLE_CASE/2, frame);
+			}
+		}
+
+		
+		
+	
+
 	}
 
 	public void majIHM()
 	{
-		afficherCercle = false;
+		this.afficherCercle   = false;
 		this.repaint();
 	}
 
@@ -111,6 +141,24 @@ public class PanelPlateau extends JPanel implements MouseListener
 			}
 			y += TAILLE_CASE;
 		} 
+	}
+
+	public void pieceManger(Piece p)
+	{
+		try
+		{
+			this.ensImagePieceManger.add(ImageIO.read(new File("lib/"+p.getCouleur()+"/"+p.getSymbole()+".png")));
+			
+		}
+		catch(Exception e){}
+
+		this.couleurPieceManger.add(p.getCouleur());
+		if(p.getCouleur() == 'B')
+			this.nbPieceMangerB++;	
+		else
+			this.nbPieceMangerN++;
+
+		this.repaint();
 	}
 
 

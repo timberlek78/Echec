@@ -94,6 +94,8 @@ public class Grille
 
 	/* Méthodes transitives */
 	public void majIHM(){this.ctrl.majIHM();}
+	public void pieceManger(Piece p){this.ctrl.pieceManger(p);}
+
 
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}

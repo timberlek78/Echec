@@ -76,7 +76,6 @@ public class Jeu
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "C'est la mauvaise couleurs, c'est au tour du joueur " + this.couleurTour + " de jouer.");
 				resetSelect();
 			}
 		}

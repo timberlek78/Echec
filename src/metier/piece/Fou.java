@@ -61,11 +61,18 @@ public class Fou extends Piece
 		int x = X + directionX;
 		int y = Y + directionY;
 	
-		while (x != nX && y != nY) {
+		while (x != nX && y != nY) 
+		{
+			if(x == -1 )
+				return false;
+
+
 			if (this.grille.estOccupe(x, y)) 
 			{
 				if(this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
 					return false;
+				else
+					this.grille.pieceManger(this.grille.getPiece(nX, nY));
 			}
 			x += directionX;
 			y += directionY;

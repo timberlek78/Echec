@@ -1,5 +1,6 @@
 package metier.piece;
 
+import java.rmi.server.SocketSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +53,11 @@ public class Pion extends Piece
 			if (nX > X && this.getCouleur() == 'B' || nX < X && this.getCouleur() == 'N')
 				if (this.grille.estOccupe(nX, nY)){
 					if (!this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) 
+					{
+						this.grille.pieceManger(this.grille.getPiece(nX, nY));
 						confirmationDeplacement(nX, nY, X, Y);
 						return true;
+					}
 				}
 
 		if (Math.abs(nX - X) == 2)
