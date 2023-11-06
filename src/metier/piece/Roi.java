@@ -20,12 +20,14 @@ public class Roi extends Piece
 		this.aRoque = true;
 		if(this.num > 1)
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);	
+		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);			
+		}
 	}
 
 	public void activation()
@@ -82,12 +84,14 @@ public class Roi extends Piece
 						{
 							System.out.println("je suis dans le true");
 							this.grille.pieceManger(this.grille.getPiece(nX, nY));
+
 							if(this.getCouleur() == 'B')
 								this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
 							else
 								this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
+
 							this.majDeplacement(X, Y, nX, nY);
-							this.grille.setEchec();
+							// this.grille.resetEchec();
 							aRoque = false;
 							return true;
 						}

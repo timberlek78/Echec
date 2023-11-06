@@ -79,7 +79,7 @@ public class Grille
 	
 
 	/*Setteur */
-	public void setEchec() {this.echec = false;}
+	public void resetEchec() {this.echec = false;}
 	public void setGrilleModele(String[][] nvGrille){this.grilleModele = nvGrille;}
 	public void pieceSelect(boolean b) {this.aPieceSelectionner = b;}
 	public void destSelect(boolean b) {this.destSelect = b;}
@@ -124,7 +124,10 @@ public class Grille
 	/*---------------------------*/
 	public void setEchec       (Piece p,char couleur,Roi r) //piece qui met le roi en echec, couleur c'est la couleur du roi
 	{
+		System.out.println("je rentre dans le setechec");
 		this.echec = true;
+		
+		System.out.println(this.getEchec());
 		this.couleurEchec = couleur;
 
 		activationEchec(p);

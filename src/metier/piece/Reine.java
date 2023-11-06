@@ -18,12 +18,14 @@ public class Reine extends Piece
 		this.num = Reine.nbPiece++;
 		if(this.num > 1)
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);			
+		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);
+		}
 	}
 
 	public void activation()

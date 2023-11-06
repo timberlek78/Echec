@@ -21,13 +21,14 @@ public class Fou extends Piece
 		this.num = Fou.nbPiece++;
 		if(this.num > 2)
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);
 		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);	
+		}
 	}	
 
 	public boolean deplacer(int nX,int nY)
@@ -145,10 +146,6 @@ public class Fou extends Piece
 						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
 						break;
 					}
-				}
-				else
-				{			
-					this.grille.setEchec();
 				}
 
 				if(this.grille.estOccupe(x, y))

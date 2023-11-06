@@ -21,12 +21,13 @@ public class Tour extends Piece
 		this.num = Tour.nbPiece++; 
 		if(this.num > 2)
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		
+		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);
 		}
 	}
 
@@ -186,7 +187,7 @@ public class Tour extends Piece
 				}
 				else
 				{
-					this.grille.setEchec();
+					// this.grille.resetEchec();
 					super.ajoutPieceMenace(this.grille.getPiece(x, y));
 					break;
 				}

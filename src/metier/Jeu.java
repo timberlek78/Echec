@@ -51,7 +51,6 @@ public class Jeu
 			this.p = this.grille.getPieceSelect();
 
 
-
 			if(this.grille.getEchec())
 			{
 				if(!(this.p instanceof Roi && this.p.getCouleur() == this.grille.getCouleurEchec()))
@@ -64,8 +63,6 @@ public class Jeu
 
 			if(p.getCouleur() == this.couleurTour && bOk)
 			{
-				
-
 				if(!this.grille.aSelectDest()) 
 					while(!this.grille.aSelectDest()){System.out.print("");} //si la destination est null alors on attend
 			

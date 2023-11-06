@@ -22,14 +22,14 @@ public class Pion extends Piece
 		this.caseMenace = new ArrayList<Case>();
 		this.num = Pion.nbPiece++;
 		if(this.num > 8)
-		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);		
+		{	
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);
 		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);		
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		
 		}
 
 	}
@@ -118,15 +118,18 @@ public class Pion extends Piece
 			Piece piece1 = this.grille.getPiece(targetX, y - 1);
 			Piece piece2 = this.grille.getPiece(targetX, y + 1);
 			
-			if (piece1 instanceof Roi || piece2 instanceof Roi) {
-				if (this.grille.estDeMemeCouleur(targetX, y - 1, this.getCouleur())) {
+			if (piece1 instanceof Roi || piece2 instanceof Roi) 
+			{
+				if (this.grille.estDeMemeCouleur(targetX, y - 1, this.getCouleur())) 
+				{
 					this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) piece1);
-				} else if (this.grille.estDeMemeCouleur(targetX, y + 1, this.getCouleur())) {
+				} 	 
+				else if (this.grille.estDeMemeCouleur(targetX, y + 1, this.getCouleur())) 
+				{
 					this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) piece2);
-				}
-			} else {
-				this.grille.setEchec();
-			}
+				}	
+				System.out.println("territobite"); 
+			} 
 	
 			if (!this.grille.estOccupe(targetX, y - 1) && !this.grille.estOccupe(targetX, y + 1)) {
 				nvCaseMenace.add((Case) this.grille.getGrillePiece()[targetX][y - 1]);

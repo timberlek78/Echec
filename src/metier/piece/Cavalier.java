@@ -21,12 +21,14 @@ public class Cavalier extends Piece
 		this.num = Cavalier.nbPiece++;
 		if(this.num > 2)
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		
+		}
 		else
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);	
+		}
 	}
 
 	public void activation()

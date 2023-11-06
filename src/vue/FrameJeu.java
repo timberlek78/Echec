@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 
 import controleur.Controleur;
@@ -30,14 +29,10 @@ public class FrameJeu extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setBackground(new Color(159, 117, 80));
 
-		
-
-
 		panelPlateau = new PanelPlateau(this);
 		
 		this.add(this.panelPlateau);
 
-	
 		this.setVisible(true);
 	}
 
