@@ -18,14 +18,12 @@ public class Reine extends Piece
 		this.num = Reine.nbPiece++;
 		if(this.num > 1)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
-		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		}
 		else
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
-		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		}
 	}
 
 	public void activation()
@@ -45,6 +43,10 @@ public class Reine extends Piece
 					return false;
 				else
 					this.grille.pieceManger(this.grille.getPiece(nX, nY));
+					if(this.getCouleur() == 'B')
+						this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+					else
+						this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
 			}
 			confirmationDeplacement(nX, nY, X, Y);
 		}
@@ -58,123 +60,73 @@ public class Reine extends Piece
 		super.setY(nY);
 		super.majIHM();
 		this.grille.estDeplacementOk();
-		caseMenaceParReine();
+		// caseMenaceParReine();
 
 	}
 
 
-	public void caseMenaceParReine()
-	{
+	public void caseMenaceParReine() {
 		ArrayList<Case> nvCasesMenacees = new ArrayList<>();
 		ArrayList<Case> chemin = new ArrayList<Case>();
 
-		for (Case case1 : super.getCaseMenace()) 
-		{
-			case1.setMenace(false,'c');
+		super.resetPieceMenace();
+	
+		for (Case case1 : super.getCaseMenace()) {
+			case1.setMenace(false, 'c');
 		}
-
-		//activation des diagonales
-
-		int[] dx = {1, -1, 1, -1}; // Déplacements horizontaux (diagonales)
-		int[] dy = {1, 1, -1, -1}; // Déplacements verticaux (diagonales)
-
-		for (int i = 0; i < 4; i++) {
+	
+		int[][] directions = {
+			{1, 0}, {-1, 0}, {0, 1}, {0, -1},
+			{1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+		};
+	
+		for (int[] direction : directions) {
+			int dx = direction[0];
+			int dy = direction[1];
+	
 			int x = super.getX();
 			int y = super.getY();
-
-			while (true) {
-				x += dx[i];
-				y += dy[i];
-
-
+	
+			while (true) 
+			{
+				x += dx;
+				y += dy;
+	
 				if (x < 0 || x >= 8 || y < 0 || y >= 8) {
-					break; // Sortir de la boucle si hors de l'échiquier
-				}	
-
-
-				if(this.grille.getPiece(x, y) instanceof Case)
-				{
-					chemin.add((Case)this.grille.getPiece(x, y));
+					break;
 				}
-				
-				if(this.grille.getPiece(x,y) instanceof Roi)
-				{
-					if(!this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
-					{
-						System.out.println("je rentre la dans le echec fou");
+	
+				if (this.grille.getPiece(x, y) instanceof Case) {
+					chemin.add((Case) this.grille.getPiece(x, y));
+				}
+	
+				if (this.grille.getPiece(x, y) instanceof Roi) {
+					if (!this.grille.estDeMemeCouleur(x, y, this.getCouleur())) {
 						super.setChemin(chemin);
-						// this.grille.deplacementCommun(this.grille.getPiece(x, y).getCouleur(),this,chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
-						break;
+						this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) this.grille.getPiece(x, y));
 					}
 				}
-				else
-				{
-					break;
-				}
-
-				// Vérifier si une pièce est présente à la nouvelle position
-				// Si c'est le cas, arrêter de parcourir dans cette direction
-				
-
-				// chemin.clear();
-
-				if(this.grille.getPiece(x, y) instanceof Case)
-					nvCasesMenacees.add((Case)this.grille.getGrillePiece()[x][y]);
-			}
-		}
-
-		//activation des colonnes
-
-		int[] deltaX = {-1,1};
-		int[] deltaY = {1,-1};
-
-		for (int dir = 0; dir < 2; dir++) {
-			int x = super.getX();
-			int y = super.getY();
-			while (true) {
-				x += deltaX[dir];
-				if (x < 0 || x >= 8)
-					break;
+	
 				if (this.grille.estOccupe(x, y)) 
-					break;
-				
-				nvCasesMenacees.add((Case) this.grille.getGrillePiece()[x][y]);
-			}
-	
-			x = super.getX(); // Réinitialisez x à la position initiale
-			y = super.getY(); // Réinitialisez y à la position initiale
-	
-			while (true) {
-				y += deltaY[dir];
-				if (y < 0 || y >= 8)
-					break;
-
-			
-				if(this.grille.getPiece(x, y) instanceof Case)
 				{
-					chemin.add((Case)this.grille.getPiece(x, y));
-				}
-
-				if(this.grille.getPiece(x,y) instanceof Roi)
-				{
-					if(!this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
-					{
-						super.setChemin(chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
-					}
-				}
-				if (this.grille.estOccupe(x, y))
+					super.ajoutPieceMenace(this.grille.getPiece(x, y));
 					break;
+				}
+	
 				nvCasesMenacees.add((Case) this.grille.getGrillePiece()[x][y]);
 			}
 		}
-
-		for (Case case1 : nvCasesMenacees) 
-		{
-			case1.setMenace(true,this.getCouleur());
+	
+		for (Case case1 : nvCasesMenacees) {
+			case1.setMenace(true, this.getCouleur());
 		}
 
+		// System.out.print(this.getCouleur() + " : ");
+		// System.out.println(nvCasesMenacees);
+	
 		super.setCaseMenace(nvCasesMenacees);
 	}
+
+
+
 }

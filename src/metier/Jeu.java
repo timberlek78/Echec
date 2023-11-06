@@ -1,14 +1,11 @@
 package metier;
 
-import javax.swing.JOptionPane;
-
-import metier.piece.Case;
+import metier.piece.Roi;
 
 public class Jeu 
 {
 	private boolean echecEtMat;
 	private Grille grille;
-	private String[] str;
 	private char couleurTour;
 	private Piece p;
 	private Piece d;
@@ -46,18 +43,29 @@ public class Jeu
 	public void boucleDeJeu(Joueur[] ensJoueurs,boolean alterner) 
 	{
 		int valeur = alterner ? 0:1;
+		boolean bOk = true;
 
 		System.out.print("");
 		if(this.grille.aPieceSelectionner())
-		{
+		{	
 			this.p = this.grille.getPieceSelect();
 
-			if(this.p instanceof Case)
-				resetSelect();
 
 
-			if(p.getCouleur() == this.couleurTour)
+			if(this.grille.getEchec())
 			{
+				if(!(this.p instanceof Roi && this.p.getCouleur() == this.grille.getCouleurEchec()))
+				{
+					System.out.println("Vous etes en echec, vous devez jouer votre roi");
+					// TODO: affichageRoiEchec
+					bOk = false;
+				}
+			}
+
+			if(p.getCouleur() == this.couleurTour && bOk)
+			{
+				
+
 				if(!this.grille.aSelectDest()) 
 					while(!this.grille.aSelectDest()){System.out.print("");} //si la destination est null alors on attend
 			
@@ -69,15 +77,19 @@ public class Jeu
 						resetSelect();
 					}
 				
-				if(this.grille.deplacementOK()){
+				if(this.grille.deplacementOK())
+				{
 					changementDeCouleur();
 					this.grille.estDeplacementOk();
+					this.grille.resetCaseMenace();
+					this.grille.activation();
+
 				}
 			}
 			else
 			{
 				resetSelect();
-			}
+			}		
 		}
 	}
 
@@ -87,7 +99,6 @@ public class Jeu
 		this.d = null;
 		this.grille.pieceSelect(false);
 		this.grille.destSelect(false);
-		System.out.println("toute est clear");
 	}
 
 	public void changementDeCouleur()
@@ -95,10 +106,3 @@ public class Jeu
 		this.couleurTour = (this.couleurTour == 'N' ? 'B' : 'N');
 	}
 }
-
-
-			
-
-			
-
-			

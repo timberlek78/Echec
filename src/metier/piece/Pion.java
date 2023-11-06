@@ -23,13 +23,13 @@ public class Pion extends Piece
 		this.num = Pion.nbPiece++;
 		if(this.num > 8)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		
 		}
 		else
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		
 		}
 
 	}
@@ -55,6 +55,10 @@ public class Pion extends Piece
 					if (!this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) 
 					{
 						this.grille.pieceManger(this.grille.getPiece(nX, nY));
+						if(this.getCouleur() == 'B')
+							this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+						else
+							this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
 						confirmationDeplacement(nX, nY, X, Y);
 						return true;
 					}
@@ -89,81 +93,54 @@ public class Pion extends Piece
 		super.setY(nY);
 		super.majIHM();
 		this.grille.estDeplacementOk();
-		this.caseMenaceParPion();
+		// this.caseMenaceParPion();
 	}
 
-	public void caseMenaceParPion()
-	{
+	public void caseMenaceParPion() {
 		ArrayList<Case> nvCaseMenace = new ArrayList<Case>();
 		ArrayList<Case> chemin = new ArrayList<Case>();
-
+	
 		int x = super.getX();
 		int y = super.getY();
-
-		for (Case case1 : this.caseMenace) 	
-		{
-			case1.setMenace(false,'c');
+	
+		for (Case case1 : this.caseMenace) {
+			case1.setMenace(false, 'c');
 		}
-
-		if(this.getCouleur() == 'B')
-		{
-			if(x + 1 < 8 && y - 1 > 0 && y + 1 < 8 )
-			{		
-				if(this.grille.getPiece(x, y) instanceof Case)
-				{
-					chemin.add((Case)this.grille.getPiece(x, y));
-				}		
-				if(this.grille.getPiece(x + 1, y - 1) instanceof Roi || this.grille.getPiece(x+1, y+1) instanceof Roi)
-				{
-					if(this.grille.estDeMemeCouleur(x + 1, y - 1, this.getCouleur()))
-					{
-						System.out.println("je rentre ici aussi mais je ne sais pas pourquoi ");
-						super.setChemin(chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x + 1, y - 1));
-					}
-					else if(this.grille.estDeMemeCouleur(x +1 , y + 1, this.getCouleur()))
-					{
-						System.out.println("je rentre ici mais je ne comprend vrm pas poruqoi ");
-						super.setChemin(chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x + 1, y + 1));
-					}
+	
+		boolean estPieceBlanche = (this.getCouleur() == 'B');
+		int targetX = estPieceBlanche ? x + 1 : x - 1;
+	
+		if (targetX >= 0 && targetX < 8 && y - 1 >= 0 && y + 1 < 8) {
+			if (this.grille.getPiece(x, y) instanceof Case) {
+				chemin.add((Case) this.grille.getPiece(x, y));
+			}
+			
+			Piece piece1 = this.grille.getPiece(targetX, y - 1);
+			Piece piece2 = this.grille.getPiece(targetX, y + 1);
+			
+			if (piece1 instanceof Roi || piece2 instanceof Roi) {
+				if (this.grille.estDeMemeCouleur(targetX, y - 1, this.getCouleur())) {
+					this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) piece1);
+				} else if (this.grille.estDeMemeCouleur(targetX, y + 1, this.getCouleur())) {
+					this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) piece2);
 				}
-				if(!this.grille.estOccupe(x + 1, y - 1) && !this.grille.estOccupe(x+1,y+1))
-				{
-					nvCaseMenace.add((Case)this.grille.getGrillePiece()[x+1][y-1]);
-					nvCaseMenace.add((Case)this.grille.getGrillePiece()[x+1][y+1]);
-				}
-			} 
+			} else {
+				this.grille.setEchec();
+			}
+	
+			if (!this.grille.estOccupe(targetX, y - 1) && !this.grille.estOccupe(targetX, y + 1)) {
+				nvCaseMenace.add((Case) this.grille.getGrillePiece()[targetX][y - 1]);
+				nvCaseMenace.add((Case) this.grille.getGrillePiece()[targetX][y + 1]);
+			} else {
+				super.ajoutPieceMenace(piece1);
+				super.ajoutPieceMenace(piece2);
+			}
 		}
-		else
-		{
-			if(x - 1 >= 0 && y - 1 > 0 && y + 1 < 8 )
-			{
-				if(this.grille.getPiece( x - 1, y - 1 ) instanceof Roi || this.grille.getPiece( x - 1, y + 1 ) instanceof Roi)
-				{
-					if(this.grille.estDeMemeCouleur( x - 1, y - 1, this.getCouleur() ))
-					{
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
-					}
-					else if(this.grille.estDeMemeCouleur(x - 1 , y + 1, this.getCouleur()))
-					{
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
-					}
-				}
-
-				if(!this.grille.estOccupe(x - 1, y - 1) && !this.grille.estOccupe(x-1,y+1))
-				{
-					nvCaseMenace.add((Case)this.grille.getGrillePiece()[x-1][y-1]);
-					nvCaseMenace.add((Case)this.grille.getGrillePiece()[x-1][y+1]);
-				}
-			} 
+	
+		for (Case case1 : nvCaseMenace) {
+			case1.setMenace(true, this.getCouleur());
 		}
-
-		for (Case case1 : nvCaseMenace) 
-		{
-			case1.setMenace(true,this.getCouleur());
-		}
-
+	
 		this.caseMenace = nvCaseMenace;
 	}
 }

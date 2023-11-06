@@ -21,13 +21,12 @@ public class Tour extends Piece
 		this.num = Tour.nbPiece++; 
 		if(this.num > 2)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
-		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		}
 		else
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);
 		}
 	}
 
@@ -53,6 +52,11 @@ public class Tour extends Piece
 			else
 			{
 				this.grille.pieceManger(this.grille.getPiece(nX, nY));
+				
+				if(this.getCouleur() == 'B')
+					this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+				else
+					this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
 			}
 		}
 		//si le déplacement est sur la colonne
@@ -104,7 +108,7 @@ public class Tour extends Piece
 			super.setY(nY);
 			super.majIHM();
 			this.grille.estDeplacementOk();
-			this.casesMenaceesParTour();
+			// this.casesMenaceesParTour();
 	}
 
 	public void casesMenaceesParTour() {
@@ -128,6 +132,28 @@ public class Tour extends Piece
 				x += deltaX[dir];
 				if (x < 0 || x >= 8)
 					break;
+
+				if(this.grille.getPiece(x, y) instanceof Case)
+				{
+					chemin.add((Case)this.grille.getPiece(x, y));
+				}
+
+				if(this.grille.getPiece(x,y) instanceof Roi)
+				{
+					if(!this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
+					{
+						super.setChemin(chemin);
+						estEchec = true;
+						xEchec = x;
+						yEchec = y;
+					}
+				}
+				else
+				{
+					super.ajoutPieceMenace(this.grille.getPiece(x, y));
+					break;
+				}
+					
 					
 				if(this.grille.getPiece(x, y) instanceof Case)
 					nvCaseMenace.add((Case) this.grille.getGrillePiece()[x][y]);
@@ -160,6 +186,8 @@ public class Tour extends Piece
 				}
 				else
 				{
+					this.grille.setEchec();
+					super.ajoutPieceMenace(this.grille.getPiece(x, y));
 					break;
 				}
 				if(this.grille.getPiece(x, y) instanceof Case)

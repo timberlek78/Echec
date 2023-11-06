@@ -1,6 +1,7 @@
 package metier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import controleur.Controleur;
 import metier.piece.Case;
@@ -14,8 +15,8 @@ import metier.piece.Tour;
 public class Grille 
 {
 	//grille modèle pour que les pièces est les bonnes coordonnées
-	String[][] grilleModele = {{"P", "C", "F", "D", "R", "F", "C", "T"},
-							   {"T", "P", "P", "P", "P", "P", "P", "P"},
+	String[][] grilleModele = {{"T", "C", "F", "D", "R", "F", "C", "T"},
+							   {"P", "P", "P", "P", "P", "P", "P", "P"},
 							   {" ", " ", " ", " ", " ", " ", " ", " "},
 							   {" ", " ", " ", " ", " ", " ", " ", " "},
 							   {" ", " ", " ", " ", " ", " ", " ", " "},
@@ -41,13 +42,16 @@ public class Grille
 	private boolean deplacementOK;
 	private ArrayList<Piece> pieceBlanche;
 	private ArrayList<Piece> pieceNoir;
+	private ArrayList<Case>  ensCase;
 	private Controleur ctrl;
+	private char couleurEchec;
 
 	public Grille(Controleur ctrl)
 	{
 		this.grillePiece        = new Piece[8][8];
 		this.pieceBlanche       = new ArrayList<>();
 		this.pieceNoir          = new ArrayList<>();
+		this.ensCase            = new ArrayList<>();
 		this.ctrl               = ctrl;
 		this.aPieceSelectionner = false;
 		this.echec              = false;
@@ -70,10 +74,12 @@ public class Grille
 	public Piece      getDestination     ()  { return this.destination;       }
 	public ArrayList<Piece> getPieceNoir ()  { return this.pieceNoir;         }
 	public ArrayList<Piece> getPieceBlanche(){ return this.pieceBlanche;      }    
+	public char getCouleurEchec()            { return this.couleurEchec;      }
 
 	
 
 	/*Setteur */
+	public void setEchec() {this.echec = false;}
 	public void setGrilleModele(String[][] nvGrille){this.grilleModele = nvGrille;}
 	public void pieceSelect(boolean b) {this.aPieceSelectionner = b;}
 	public void destSelect(boolean b) {this.destSelect = b;}
@@ -91,22 +97,37 @@ public class Grille
 		destSelect(true);
 	}
 
+	public void resetCaseMenace()
+	{
+		
+		for (Case case1 : this.ensCase) 
+		{
+			case1.resetCouleurMenace();
+		}
+	}
+
 
 	/* Méthodes transitives */
 	public void majIHM(){this.ctrl.majIHM();}
 	public void pieceManger(Piece p){this.ctrl.pieceManger(p);}
 
-
+	public void addEnsCase     (Case c ){this.ensCase.add(c);     }
 	public void addPieceNoir   (Piece p){this.pieceNoir   .add(p);}
 	public void addPieceBlanche(Piece p){this.pieceBlanche.add(p);}
 
 	public void removePieceNoir   (Piece p){this.pieceNoir.remove(p)   ;}
 	public void removePieceBlanche(Piece p){this.pieceBlanche.remove(p);}
 	
+
+	/*---------------------------*/
+	/* Gestion de l'echec et mat */
+	/*---------------------------*/
 	public void setEchec       (Piece p,char couleur,Roi r) //piece qui met le roi en echec, couleur c'est la couleur du roi
 	{
 		this.echec = true;
+		this.couleurEchec = couleur;
 
+		activationEchec(p);
 		if(estEchecEtMat(p,couleur,r))
 			System.out.println("Eh oh tu es echec et mat gros malin !!!!");           
 	}
@@ -114,52 +135,45 @@ public class Grille
 	//verifie si le roi est échec et mat 
 	public boolean estEchecEtMat(Piece p,char couleur,Roi r)
 	{
-
-		System.out.println("Couleur estEchecEtMat = " + couleur);
 		ArrayList<Case> chemin = p.getChemin();
 
 		boolean peutCouvrir    = peutCouvrir(p,couleur,chemin);
 		boolean peutDeplacer   = peutDeplacer(r);
+		boolean peutEtreManger = peutEtreManger(p);
 
-		System.out.println("peutCouvrir = " + peutCouvrir);
-		System.out.println("peutDeplacer = " + peutDeplacer);
 
-		if(peutCouvrir || peutDeplacer)
-		{
-			System.out.println("true");
-			return false;
-		}
-		else
-		{
-			System.out.println("false");
+		System.out.println("peutCouvrir    : " + peutCouvrir);
+		System.out.println("peutDeplacer   : " + peutDeplacer);
+		System.out.println("peutEtreManger : " + peutEtreManger);
+
+		if(peutCouvrir && peutDeplacer && peutEtreManger)
 			return true;
-		}
+		else
+			return false;
+
 	}
 
 	//verifie si une pièce peut venir couvrir l'echec 
-	public boolean peutCouvrir(Piece p,char couleur, ArrayList<Case> chemin) // pièce qui met le roi en echec - couleur du roi - chemin depuis lequel le roi est en echec
+	public boolean peutCouvrir(Piece p, char couleur, ArrayList<Case> chemin) 
 	{
-		if(couleur == 'B') //si le roi en echec est blanc
-		{
-			for (Piece p1 : this.getPieceBlanche()) //on parcours toutes les pièces blanches encore présentes dans le jeu
-			{
-				if(!p1.equals(p)) // si la pièce p1 n'est pas le roi
-					if(deplacementCommun( p1, chemin )) //si p1 a un déplacement en commun
-						return true;//il peut alors venir couvrir l'echec
+		ArrayList<Piece> pieces;
+		
+		if (couleur == 'B') {
+			pieces = this.getPieceBlanche();
+		} else {
+			pieces = this.getPieceNoir();
+		}
+	
+		for (Piece p1 : pieces) {
+			if (p1.equals(p) || (p1 instanceof Roi)) {
+				continue;
 			}
-			return false;
+	
+			if (deplacementCommun(p1, chemin)) {
+				return true; //l'echec peut etre couvert
+			}
 		}
-		else
-		{
-			for (Piece p1 : this.getPieceNoir()) 
-			{
-				if(!p1.equals(p))
-					if(!(p1 instanceof Roi))
-						if(deplacementCommun( p1, chemin ))
-							return true;
-			} 
-			return false;
-		}
+		return false;
 	}
 
 	//verifie si le roi peut se déplacer
@@ -169,13 +183,34 @@ public class Grille
 
 		for (Case case1 : deplacementPossible) //parcours toutes les cases ou le déplacement est possible (pas occupé)
 		{
-			if(!case1.getMenace()) // si une des cases n'est pas menacée
+			System.out.println(case1);
+			System.out.println("rechercherCouleurMenace : " + case1.rechercheCouleurMenace(r.getCouleur()));
+			if(case1.getMenace() && !case1.rechercheCouleurMenace(r.getCouleur()) ) // si une des cases n'est pas menacée
 			{
 				return true; //le roi peut alors se déplacer
 			}		
 		}
 		return false;
 	}
+
+	public boolean peutEtreManger(Piece p) //piece qui met le roi en ecchec 
+	{
+		char couleur = p.getCouleur();
+		List<Piece> pieces = (couleur == 'B') ? this.pieceBlanche : this.pieceNoir;
+
+		for (Piece piece : pieces) 
+		{
+			for (Piece p1 : p.getPieceMenace()) 
+			{
+				if (piece.equals(p1) ) 
+				{
+					return true; //la piece qui met le roi en echec peut etre mangée
+				}
+			}
+		}
+		return false;
+	}
+
 
 	//verifie si la pièce p en argument, peut venir se déplacé sur le chemin en argument 
 	public boolean deplacementCommun(Piece p, ArrayList<Case> chemin)// p est la pièce dans le même camp que le roi
@@ -191,6 +226,9 @@ public class Grille
 		}
 		return false;
 	}
+
+	/*------------------------FIN ECHEC ET MAT----------------------------- */
+
 
 	//verification des cases
 	public boolean estOccupe(int nX,int nY)
@@ -223,9 +261,17 @@ public class Grille
 	{
 		Piece tmp = this.grillePiece [X] [Y];
 
+		if(tmp instanceof Case)
+			this.ensCase.remove(tmp);
+
 		this.grillePiece[X][Y] = new Case( X, Y, this);
+
+		this.ensCase.add((Case)this.grillePiece[X][Y]);
+
 		this.grillePiece[nX][nY] = tmp;
 	}
+
+
 	//activation des cases menacées par toutes les pièces
 	public void activation()
 	{
@@ -233,6 +279,22 @@ public class Grille
 			for (int j = 0; j < grillePiece[i].length; j++) 
 				this.grillePiece[i][j].activation();
 	}
+
+	public void activationEchec(Piece pieceEchec)
+	{
+		ArrayList<Piece> caseTest = (pieceEchec.getCouleur() == 'B' ? this.pieceBlanche : this.pieceNoir);
+
+		for (Piece piece : caseTest) 
+		{
+			boolean estMemePosition = (piece.getX() == pieceEchec.getX() && piece.getY() == pieceEchec.getY()); 
+			if(!(piece.getCouleur() == pieceEchec.getCouleur() && estMemePosition))
+			{
+				piece.activation();
+			}
+		}
+	}
+
+
 	//initialisation de la grille 
 	public void creationGrillePiece()
 	{

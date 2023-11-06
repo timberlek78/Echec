@@ -8,7 +8,8 @@ public abstract class Piece
 {
 	protected static String ANSI_YELLOW = "\u001B[33m";
 	protected static ArrayList<Case> chemin;
-
+	
+	private ArrayList<Piece> ensPieceMenace;
 	private boolean etat;
 	private int x,y;
 	private char couleur;
@@ -20,12 +21,13 @@ public abstract class Piece
 
 	public Piece( int x, int y, Grille grille, String symbole )
 	{
-		this.x          = x;
-		this.y          = y;
-		this.grille     = grille;
-		this.symbole    = symbole;
-		Piece.chemin          = new ArrayList<>();
-		this.caseMenace = new ArrayList<>();
+		this.x              = x;
+		this.y              = y;
+		this.grille         = grille;
+		this.symbole        = symbole;
+		Piece.chemin        = new ArrayList<>();
+		this.caseMenace     = new ArrayList<>();
+		this.ensPieceMenace = new ArrayList<Piece>();
 
 	}
 
@@ -59,15 +61,16 @@ public abstract class Piece
 
 
 	/* Getteur */
-	public int 	            getX() 			 { return this.x;             }
-	public int 	            getY() 		 	 { return this.y;             }
-	public boolean          getEtat()  		 { return this.etat;          }
-	public char             getCouleur()  	 { return this.couleur;       }
-	public Grille           getGrille() 	 { return this.grille;        }
-	public String           getSymbole()	 { return this.symbole;       }
-	public ArrayList<Case>  getCaseMenace()  { return this.caseMenace;    }
+	public int 	            getX() 			  { return this.x;             }
+	public int 	            getY() 		 	  { return this.y;             }
+	public boolean          getEtat()  		  { return this.etat;          }
+	public char             getCouleur()  	  { return this.couleur;       }
+	public Grille           getGrille() 	  { return this.grille;        }
+	public String           getSymbole()	  { return this.symbole;       }
+	public ArrayList<Case>  getCaseMenace()   { return this.caseMenace;    }
 	public char 		    getCouleurMenace(){return 'c';};
-	public ArrayList<Case>  getChemin()      { return Piece.chemin;        }
+	public ArrayList<Case>  getChemin()       { return Piece.chemin;        }
+	public ArrayList<Piece> getPieceMenace()  { return this.ensPieceMenace; }
 
 
 
@@ -76,7 +79,11 @@ public abstract class Piece
 	public void setY      ( int y )              {this.y = y;        }
 	public void setCouleur( char c)              {this.couleur = c  ;}
 	public void setChemin (ArrayList<Case> chem) {Piece.chemin = chem;}
+	public void setSymbole(String s){ this.symbole = s;}
 	public void setCaseMenace(ArrayList<Case> nvCaseMenace) { this.caseMenace = nvCaseMenace;}
+
+	public void ajoutPieceMenace(Piece p) {this.ensPieceMenace.add(p);}
+	public void resetPieceMenace(){this.ensPieceMenace.clear();}
 
 
 	
@@ -87,7 +94,6 @@ public abstract class Piece
 		if( nX == X)
 		{
 			//on parcours toutes les cases jusqu'a la destination souhaité
-			System.out.println("je suis dans le X");
 			for (int y = Y+1; y < nY; y++) 
 			{
 				//si l'une des cases est occupé alors le deplacement est impossible
@@ -103,7 +109,6 @@ public abstract class Piece
 		//si le déplacement est sur la ligne 
 		if(nY == Y)
 		{
-			System.out.println("je suis dans le Y");
 			for (int x = X + 1; x < nX; x++) 
 			{
 				if(this.grille.estOccupe(x,nY))

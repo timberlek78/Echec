@@ -30,6 +30,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 	private FrameJeu frame;
 	private boolean afficherCercle = false;
 	private boolean bTemp; //true = une piece a été selectionné et attend sa destination/ false = une piece n'a pas encore été selectionné
+	private boolean echequierFait = false;
 	private int xCercle;
 	private int yCercle;
 	private int nbPieceMangerB;
@@ -58,40 +59,37 @@ public class PanelPlateau extends JPanel implements MouseListener
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		this.g = g2d;
-		g2d.setStroke(new BasicStroke(20)); // Épaisseur de trait de 2 pixels
+		this.g.setStroke(new BasicStroke(10)); // Épaisseur de trait de 2 pixels
 
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 100;
 
 
-		this.g.drawRect(XposDep, YposDep, TAILLE_CASE * 8, TAILLE_CASE * 8);
-		echequier(XposDep, YposDep, g2d);
-		affichageDesPieces(XposDep, YposDep, g2d);
+		
+
+		echequier(XposDep, YposDep, this.g);
+
+		affichageDesPieces(XposDep, YposDep, this.g);
 		
 		if (afficherCercle) 
 		{
-			g2d.setStroke(new BasicStroke(10));
-			g2d.setColor(Color.YELLOW);
-			g2d.drawOval(xCercle - 20, yCercle - 20, TAILLE_CASE / 2, TAILLE_CASE / 2);
+			this.g.setStroke(new BasicStroke(5));
+			this.g.setColor(Color.YELLOW);
+			this.g.drawRect(xCercle , yCercle, TAILLE_CASE, TAILLE_CASE );
 		}
 
 
 		for (int i = 0; i < ensImagePieceManger.size(); i++) 
 		{
-			if(this.couleurPieceManger.get(i) == 'B')
+			if(this.couleurPieceManger.get(i) == 'N')
 			{
-				g2d.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerB * TAILLE_CASE/2), Y_PIECE_MANGER_B, TAILLE_CASE/2, TAILLE_CASE/2, frame);
+				this.g.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerB * TAILLE_CASE/2), Y_PIECE_MANGER_B, TAILLE_CASE/2, TAILLE_CASE/2, frame);
 			}
 			else
 			{
-				g2d.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerN * TAILLE_CASE/2), Y_PIECE_MANGER_N, TAILLE_CASE/2, TAILLE_CASE/2, frame);
+				this.g.drawImage(ensImagePieceManger.get(i), X_PIECE_MANGER + (nbPieceMangerN * TAILLE_CASE/2), Y_PIECE_MANGER_N, TAILLE_CASE/2, TAILLE_CASE/2, frame);
 			}
 		}
-
-		
-		
-	
-
 	}
 
 	public void majIHM()
@@ -102,6 +100,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 
 	public void echequier(int XposDep,int YposDep ,Graphics g)
 	{
+		this.g.drawRect(XposDep, YposDep, TAILLE_CASE * 8, TAILLE_CASE * 8);
 		int y = YposDep;
 		for (int i = 0; i < 8; i++) 
 		{	
@@ -204,7 +203,7 @@ public class PanelPlateau extends JPanel implements MouseListener
 						{
 							this.frame.setPieceSelect(i, j);
 							this.bTemp = true;
-							pieceSelectIHM((int)rec.getCenterX(),(int)rec.getCenterY());
+							pieceSelectIHM((int)rec.getX(),(int)rec.getY());
 						}
 					}
 				}

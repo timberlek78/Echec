@@ -20,14 +20,12 @@ public class Roi extends Piece
 		this.aRoque = true;
 		if(this.num > 1)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
-		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		}
 		else
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
-		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		}
 	}
 
 	public void activation()
@@ -84,7 +82,12 @@ public class Roi extends Piece
 						{
 							System.out.println("je suis dans le true");
 							this.grille.pieceManger(this.grille.getPiece(nX, nY));
+							if(this.getCouleur() == 'B')
+								this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+							else
+								this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
 							this.majDeplacement(X, Y, nX, nY);
+							this.grille.setEchec();
 							aRoque = false;
 							return true;
 						}
@@ -117,6 +120,10 @@ public class Roi extends Piece
 					// Ajoutez la case à la liste des cases atteignables
 					casesPossibles.add((Case)this.grille.getGrillePiece()[x][y]);
 				}
+				else
+				{
+					super.ajoutPieceMenace(this.grille.getPiece(x, y));
+				}
 			}
 		}
 		// Mettez à jour l'attribut this.caseMenace avec les cases atteignables
@@ -130,7 +137,7 @@ public class Roi extends Piece
 		super.setY(nY);
 		super.majIHM();
 		this.grille.estDeplacementOk();
-		this.casesAtteignablesPourRoi();
+		// this.casesAtteignablesPourRoi();
 	}
 
 	public boolean roque(int X, int Y, int nX,int nY)

@@ -21,14 +21,13 @@ public class Fou extends Piece
 		this.num = Fou.nbPiece++;
 		if(this.num > 2)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
-		}
-		else
-		{
 			this.setCouleur('B');
 			this.grille.addPieceBlanche(this);
 		}
+		else
+		{
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		}
 	}	
 
 	public boolean deplacer(int nX,int nY)
@@ -70,9 +69,17 @@ public class Fou extends Piece
 			if (this.grille.estOccupe(x, y)) 
 			{
 				if(this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
+				{
 					return false;
+				}
 				else
+				{
 					this.grille.pieceManger(this.grille.getPiece(nX, nY));
+					if(this.getCouleur() == 'B')
+						this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+					else
+						this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
+				}
 			}
 			x += directionX;
 			y += directionY;
@@ -90,7 +97,7 @@ public class Fou extends Piece
 		super.setY(nY);
 		super.majIHM();
 		this.grille.estDeplacementOk();
-		casesMenaceesParFou();
+		// casesMenaceesParFou();
 	}
 
 	public void activation()
@@ -134,14 +141,19 @@ public class Fou extends Piece
 				{
 					if(!this.grille.estDeMemeCouleur(x, y, this.getCouleur()))
 					{
-						System.out.println("je rentre la dans le echec fou");
 						super.setChemin(chemin);
 						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
 						break;
 					}
 				}
 				else
+				{			
+					this.grille.setEchec();
+				}
+
+				if(this.grille.estOccupe(x, y))
 				{
+					super.ajoutPieceMenace(this.grille.getPiece(x, y));
 					break;
 				}
 

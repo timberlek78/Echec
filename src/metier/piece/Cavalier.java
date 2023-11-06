@@ -21,14 +21,12 @@ public class Cavalier extends Piece
 		this.num = Cavalier.nbPiece++;
 		if(this.num > 2)
 		{
-			this.setCouleur('N');
-			this.grille.addPieceNoir(this);
-		}
+			this.setCouleur('B');
+			this.grille.addPieceBlanche(this);		}
 		else
 		{
-			this.setCouleur('B');
-			this.grille.addPieceBlanche(this);
-		}
+			this.setCouleur('N');
+			this.grille.addPieceNoir(this);		}
 	}
 
 	public void activation()
@@ -47,9 +45,17 @@ public class Cavalier extends Piece
 			// Vérifiez si la case cible est occupée par une pièce de couleur différente
 			if (this.grille.estOccupe(nX, nY)) {
 				if (this.grille.estDeMemeCouleur(nX, nY, this.getCouleur())) 
+				{
 					return false;
+				}
 				else
+				{
 					this.grille.pieceManger(this.grille.getPiece(nX, nY));
+					if(this.getCouleur() == 'B')
+						this.grille.removePieceBlanche(this.grille.getPiece(nX, nY));
+					else
+						this.grille.removePieceNoir(this.grille.getPiece(nX, nY));
+				}
 			}
 			confirmationDeplacement(nX, nY, X, Y);
 			return true;
@@ -65,12 +71,13 @@ public class Cavalier extends Piece
 			super.setY(nY);
 			super.majIHM();
 			this.grille.estDeplacementOk();
-			this.caseMenaceParCavalier();
+			// this.caseMenaceParCavalier();
 	}
 
 
 	public void caseMenaceParCavalier()
 	{
+		
 		List<Case> nvCasesMenacees = new ArrayList<Case>();
 		ArrayList<Case> chemin = new ArrayList<Case>();
 
@@ -85,35 +92,48 @@ public class Cavalier extends Piece
 		int[] dx = {2, 2, 1, 1, -1, -1, -2, -2};
 		int[] dy = {1, -1, 2, -2, 2, -2, 1, -1};
 
-		for (int i = 0; i < 8; i++) 
-		{
+		boolean caseTraitee = false; // Indicateur pour vérifier si la case a déjà été traitée
+
+		for (int i = 0; i < 8; i++) {
 			int x = X + dx[i];
 			int y = Y + dy[i];
-		
-			if (x >= 0 && x < 8 && y >= 0 && y < 8) 
-			{
-				if(this.grille.getPiece(x, y) instanceof Case)
-				{
-					chemin.add((Case)this.grille.getPiece(x, y));
-				}
+			
+			caseTraitee = false; // Réinitialisez l'indicateur pour chaque nouvelle case
 
-				if(this.grille.getPiece(x, y) instanceof Roi)
+			if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+				// Vérifiez si la case a déjà été traitée
+				for (Case case1 : nvCasesMenacees) 
 				{
-					if(!this.grille.estDeMemeCouleur(x, y, getCouleur()))
+					// System.out.println("case courante : " + this.grille.getPiece(x, y));
+					// System.out.print("case a tester : " + case1);
+					if (case1.getX() == x && case1.getY() == y)
 					{
-						super.setChemin(chemin);
-						this.grille.setEchec(this,this.grille.getPiece(x, y).getCouleur(),(Roi)this.grille.getPiece(x, y));
+						caseTraitee = true;
+						break;
 					}
 				}
-				if (grille.estOccupe(x, y)) 
+				
+				if (!caseTraitee)
 				{
-					// Vérifier si la case n'est pas déjà occupée par une autre pièce
-					break;
+					if (this.grille.getPiece(x, y) instanceof Case) {
+						chemin.add((Case) this.grille.getPiece(x, y));
+					}
+
+					if (this.grille.getPiece(x, y) instanceof Roi) {
+						if (!this.grille.estDeMemeCouleur(x, y, getCouleur())) {
+							System.out.println("-------------- je rentre 2 fois ici -----------------------" + this.getSymbole() + " : "+ this.getCouleur());
+							super.setChemin(chemin);
+							this.grille.setEchec(this, this.grille.getPiece(x, y).getCouleur(), (Roi) this.grille.getPiece(x, y));
+						}
+					}
+					if (grille.estOccupe(x, y)) {
+						super.ajoutPieceMenace(this.grille.getPiece(x, y));
+						break;
+					}
+					nvCasesMenacees.add((Case) this.grille.getGrillePiece()[x][y]);
 				}
-				nvCasesMenacees.add((Case)this.grille.getGrillePiece()[x][y]);
 			}
 		}
-
 
 		for (Case case1 : nvCasesMenacees) 
 		{
