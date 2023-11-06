@@ -61,11 +61,19 @@ public class PanelPlateau extends JPanel implements MouseListener
 		this.g = g2d;
 		this.g.setStroke(new BasicStroke(10)); // Épaisseur de trait de 2 pixels
 
+
+		// try 
+		// {
+		// 	BufferedImage image = ImageIO.read(new File("lib/fond.jpg"));
+		// 	this.g.drawImage(image, 0, 0, WIDTH, HEIGHT, frame);
+		// } 
+		// catch (Exception e) 
+		// {		}
+		
+
+
 		int XposDep = this.frame.getWidth() / 4;
 		int YposDep = 100;
-
-
-		
 
 		echequier(XposDep, YposDep, this.g);
 

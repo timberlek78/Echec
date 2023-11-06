@@ -36,6 +36,7 @@ public class Grille
 	private Piece[][] grillePiece;
 	private Piece   pieceSelect;
 	private Piece   destination;
+	private Piece   pieceEchec;
 	private boolean echec;
 	private boolean aPieceSelectionner;
 	private boolean destSelect;
@@ -45,6 +46,8 @@ public class Grille
 	private ArrayList<Case>  ensCase;
 	private Controleur ctrl;
 	private char couleurEchec;
+
+	
 
 	public Grille(Controleur ctrl)
 	{
@@ -63,18 +66,19 @@ public class Grille
 
 
 	/*Getteur */
-	public String[][] getGrilleModele    ()  { return this.grilleModele;      }
-	public Piece [][] getGrillePiece     ()  { return this.grillePiece;       }
-	public boolean    getEchec           ()  { return this.echec;             }
-	public boolean    aPieceSelectionner ()  { return this.aPieceSelectionner;}
-	public boolean    aSelectDest        ()  { return this.destSelect;        }
-	public boolean    deplacementOK      ()	 { return this.deplacementOK;     }
-	public Piece      getPiece(int x,int y)  { return this.grillePiece[x][y]; }
-	public Piece      getPieceSelect     ()  { return this.pieceSelect;       }
-	public Piece      getDestination     ()  { return this.destination;       }
-	public ArrayList<Piece> getPieceNoir ()  { return this.pieceNoir;         }
-	public ArrayList<Piece> getPieceBlanche(){ return this.pieceBlanche;      }    
-	public char getCouleurEchec()            { return this.couleurEchec;      }
+	public String[][]       getGrilleModele    (             )  { return this.grilleModele;       }
+	public Piece [][]       getGrillePiece     (             )  { return this.grillePiece;        }
+	public ArrayList<Piece> getPieceNoir       (             )  { return this.pieceNoir;          }
+	public ArrayList<Piece> getPieceBlanche    (             )  { return this.pieceBlanche;       } 
+	public boolean          getEchec           (             )  { return this.echec;              }
+	public boolean          aPieceSelectionner (             )  { return this.aPieceSelectionner; }
+	public boolean          aSelectDest        (             )  { return this.destSelect;         }
+	public boolean          deplacementOK      (             )  { return this.deplacementOK;      }
+	public Piece            getPiece           ( int x,int y )  { return this.grillePiece[x][y];  }
+	public Piece            getPieceSelect     (             )  { return this.pieceSelect;        }
+	public Piece            getDestination     (             )  { return this.destination;        }	
+	public Piece            getPieceEchec      (             )  { return this.pieceEchec;         }   
+	public char             getCouleurEchec    (             )  { return this.couleurEchec;       }
 
 	
 
@@ -126,7 +130,8 @@ public class Grille
 	{
 		System.out.println("je rentre dans le setechec");
 		this.echec = true;
-		
+		this.pieceEchec = p;
+
 		System.out.println(this.getEchec());
 		this.couleurEchec = couleur;
 
@@ -159,14 +164,8 @@ public class Grille
 	//verifie si une pièce peut venir couvrir l'echec 
 	public boolean peutCouvrir(Piece p, char couleur, ArrayList<Case> chemin) 
 	{
-		ArrayList<Piece> pieces;
+		ArrayList<Piece> pieces = (couleur == 'B' ? this.pieceBlanche : this.pieceNoir);
 		
-		if (couleur == 'B') {
-			pieces = this.getPieceBlanche();
-		} else {
-			pieces = this.getPieceNoir();
-		}
-	
 		for (Piece p1 : pieces) {
 			if (p1.equals(p) || (p1 instanceof Roi)) {
 				continue;
@@ -231,6 +230,22 @@ public class Grille
 	}
 
 	/*------------------------FIN ECHEC ET MAT----------------------------- */
+
+	public boolean peuventManger(Piece p1, Piece p2)
+	{
+
+		for (Piece deplacemenentP1 : p1.getPieceMenace()) 
+		{
+			for (Piece deplacementP2 : p2.getPieceMenace()) 
+			{
+				if (deplacemenentP1.equals(deplacementP2) ) 
+				{
+					return true; //la piece qui met le roi en echec peut etre mangée
+				}
+			}
+		}
+		return false;
+	}
 
 
 	//verification des cases

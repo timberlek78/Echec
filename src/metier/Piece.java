@@ -27,7 +27,7 @@ public abstract class Piece
 		this.symbole        = symbole;
 		Piece.chemin        = new ArrayList<>();
 		this.caseMenace     = new ArrayList<>();
-		this.ensPieceMenace = new ArrayList<Piece>();
+		this.ensPieceMenace = new ArrayList<>(); //contient outes les pieces que la piece courante menace
 
 	}
 

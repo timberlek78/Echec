@@ -1,5 +1,7 @@
 package metier;
 
+import javax.swing.JOptionPane;
+
 import metier.piece.Roi;
 
 public class Jeu 
@@ -51,9 +53,11 @@ public class Jeu
 			this.p = this.grille.getPieceSelect();
 
 
+
 			if(this.grille.getEchec())
 			{
-				if(!(this.p instanceof Roi && this.p.getCouleur() == this.grille.getCouleurEchec()))
+				System.out.println("this.grille.peuventManger(p, this.grille.getPieceEchec()) : " + this.grille.peuventManger(p, this.grille.getPieceEchec()));
+				if(!(this.p instanceof Roi && this.p.getCouleur() == this.grille.getCouleurEchec()) && !this.grille.peuventManger(p, this.grille.getPieceEchec()))
 				{
 					System.out.println("Vous etes en echec, vous devez jouer votre roi");
 					// TODO: affichageRoiEchec

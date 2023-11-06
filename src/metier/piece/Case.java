@@ -29,7 +29,10 @@ public class Case extends Piece
 
 	public boolean rechercheCouleurMenace(char couleur) // couleur de la piece qui menace
 	{
+		System.out.println("je suis rentrer la dedans");
+		System.out.println(this);
 		System.out.println(this.couleurPiece);
+		
 		for (int i = 0; i <this.couleurPiece.size(); i++) 
 			if(this.couleurPiece.get(i) == couleur){
 				return true; //la case est menacé par une piece de la couleur de la piece qui menace
